@@ -495,15 +495,18 @@
     border-left: 1px solid rgba(255,255,255,0.08);
   }
   .tick-art {
-    width: 68%;
-    max-width: 320px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
     transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
-    filter: drop-shadow(0 12px 30px rgba(0,0,0,0.6));
   }
   .tick-art img {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
+    object-fit: cover;
+    object-position: center;
   }
   .species-card:hover .tick-glyph,
   .species-card:hover .tick-art { transform: scale(1.1) rotate(-3deg); }
@@ -1676,7 +1679,7 @@
     .species-image { min-height: 240px; }
     .species-body { padding: 28px 24px; }
     .species-name { font-size: 34px; }
-    .tick-art { width: 60%; max-width: 220px; }
+    .tick-art { width: 100%; height: 100%; max-width: none; }
   }
 </style>
 </head>
