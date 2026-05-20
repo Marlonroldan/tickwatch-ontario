@@ -1472,23 +1472,132 @@
     margin-top: 40px;
   }
   .tracker-empty { text-align: center; }
-  .tracker-empty p { color: var(--ink-dim); margin-bottom: 24px; }
-  .date-input-row {
+  .tracker-empty > p {
+    color: var(--ink-dim);
+    margin-bottom: 32px;
+    font-size: 15px;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Quick-pick date buttons */
+  .date-quick {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .date-chip {
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 100px;
+    padding: 12px 22px;
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(.2,.8,.2,1);
+    letter-spacing: 0.2px;
+  }
+  .date-chip:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(95,191,127,0.15) 0%, rgba(95,191,127,0.05) 100%);
+    color: var(--accent);
+    box-shadow: 0 8px 24px rgba(95,191,127,0.2);
+  }
+  .date-chip.selected {
+    background: linear-gradient(135deg, rgba(95,191,127,0.25) 0%, rgba(95,191,127,0.1) 100%);
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 8px 24px rgba(95,191,127,0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .date-chip-day {
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1;
+    margin-right: 8px;
+    font-style: italic;
+  }
+  .date-divider {
+    display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px 0 20px;
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+  }
+  .date-divider::before,
+  .date-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    max-width: 80px;
+    background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+  }
+  /* Custom date picker wrapper */
+  .date-picker-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    padding: 4px 4px 4px 18px;
+    transition: all 0.25s;
+    margin-bottom: 8px;
+  }
+  .date-picker-wrap:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(95,191,127,0.12);
+  }
+  .date-picker-icon {
+    color: var(--ink-dim);
+    margin-right: 12px;
+    display: flex;
+  }
+  .date-picker-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ink-dim);
+    margin-right: 14px;
+    font-weight: 600;
   }
   .date-input {
-    background: var(--bg);
-    border: 1px solid var(--border-strong);
-    border-radius: 10px;
-    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    padding: 12px 14px;
     color: var(--ink);
     font-size: 15px;
     font-family: inherit;
+    font-weight: 600;
     color-scheme: dark;
+    outline: none;
+    cursor: pointer;
+    min-width: 140px;
+  }
+  .date-input::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .date-input::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+  .date-action-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
   }
   .btn-secondary {
     background: transparent;
@@ -1906,10 +2015,30 @@
 
   <div class="tracker-card">
     <div class="tracker-empty" id="trackerEmpty">
-      <p>Enter the date you were bitten to start your 30-day symptom watch. Data is saved only on your device — nothing is sent anywhere.</p>
-      <div class="date-input-row">
-        <input type="date" class="date-input" id="biteDate">
-        <button class="btn-primary" id="startTracker">Start tracking</button>
+      <p>When were you bitten? Pick a day below to start your 30-day symptom watch. Everything stays on your device — nothing is sent anywhere.</p>
+
+      <div class="date-quick" id="dateQuick">
+        <button type="button" class="date-chip" data-offset="0"><span class="date-chip-day">0</span>Today</button>
+        <button type="button" class="date-chip" data-offset="1"><span class="date-chip-day">1</span>Yesterday</button>
+        <button type="button" class="date-chip" data-offset="2"><span class="date-chip-day">2</span>2 days ago</button>
+        <button type="button" class="date-chip" data-offset="3"><span class="date-chip-day">3</span>3 days ago</button>
+        <button type="button" class="date-chip" data-offset="7"><span class="date-chip-day">7</span>A week ago</button>
+      </div>
+
+      <div class="date-divider">or pick an exact date</div>
+
+      <div style="text-align:center;">
+        <div class="date-picker-wrap">
+          <div class="date-picker-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <span class="date-picker-label">Bite date</span>
+          <input type="date" class="date-input" id="biteDate">
+        </div>
+      </div>
+
+      <div class="date-action-row">
+        <button class="btn-primary" id="startTracker">Start 30-day tracker →</button>
       </div>
     </div>
 
@@ -2949,6 +3078,29 @@ const biteDateInput = document.getElementById('biteDate');
 const todayStr = new Date().toISOString().split('T')[0];
 biteDateInput.max = todayStr;
 biteDateInput.value = todayStr;
+
+// Wire quick-pick chips
+function dateFromOffset(daysBack) {
+  const d = new Date();
+  d.setDate(d.getDate() - daysBack);
+  return d.toISOString().split('T')[0];
+}
+function syncChipSelection() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const picked = new Date(biteDateInput.value); picked.setHours(0,0,0,0);
+  const diff = Math.round((today - picked) / 86400000);
+  document.querySelectorAll('.date-chip').forEach(chip => {
+    chip.classList.toggle('selected', parseInt(chip.dataset.offset) === diff);
+  });
+}
+document.querySelectorAll('.date-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    biteDateInput.value = dateFromOffset(parseInt(chip.dataset.offset));
+    syncChipSelection();
+  });
+});
+biteDateInput.addEventListener('change', syncChipSelection);
+syncChipSelection();
 
 function loadTracker() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
