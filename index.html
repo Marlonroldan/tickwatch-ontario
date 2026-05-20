@@ -3,479 +3,3056 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I Found a Tick — What Do I Do? | TickWatch Ontario</title>
-<meta name="description" content="Step-by-step Ontario-specific guide for what to do after a tick bite. Removal, identification, when to see a pharmacist or doctor, and 30-day symptom monitoring.">
+<title>TickWatch Ontario — Live Tick Tracker</title>
+<meta name="description" content="Ontario's live tick tracker. Real-time tick activity by region, species identification, and what to do if you've been bitten.">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- Display + body typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
 <style>
   :root {
-    --bg: #fbf9f4;
-    --ink: #1a1a1a;
-    --muted: #5c5c5c;
-    --accent: #2d6a4f;
-    --accent-light: #d8f3dc;
-    --warning: #c1440e;
-    --warning-light: #fde4d4;
-    --card: #ffffff;
-    --border: #e5e1d8;
+    --bg: #0a0d0b;
+    --bg-2: #11160f;
+    --bg-3: #161c18;
+    --panel: #1b221d;
+    --cream: #f4ede0;
+    --cream-2: #e8dfc8;
+    --ink: #f5f3ec;
+    --ink-dim: #a8a89e;
+    --ink-dark: #1a1a1a;
+    --ink-dark-dim: #5a5a5a;
+    --muted: #6f7269;
+    --accent: #5fbf7f;
+    --accent-2: #2d6a4f;
+    --warning: #ff8c5a;
+    --danger: #e85a4f;
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.16);
+    /* Species accents */
+    --sp-blacklegged: #e85a4f;
+    --sp-dog: #d4a04a;
+    --sp-lonestar: #f0ebd8;
+    --sp-groundhog: #d4a247;
+    /* Display font stack */
+    --font-display: "Instrument Serif", "Times New Roman", Georgia, serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-family: var(--font-body);
     background: var(--bg);
     color: var(--ink);
     line-height: 1.6;
-    margin: 0;
-    padding: 0;
     -webkit-font-smoothing: antialiased;
-  }
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 24px 20px 80px;
-  }
-  header {
-    padding: 16px 0 32px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 32px;
-  }
-  .brand {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  h1 {
-    font-size: 36px;
-    line-height: 1.2;
-    margin: 8px 0 12px;
-    font-weight: 700;
-  }
-  .lede {
-    font-size: 18px;
-    color: var(--muted);
-    margin: 0;
-  }
-  h2 {
-    font-size: 26px;
-    margin: 48px 0 12px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-    line-height: 1.3;
-  }
-  h2 .step {
-    display: inline-block;
-    background: var(--accent);
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 32px;
-    font-size: 16px;
-    margin-right: 10px;
-    vertical-align: 2px;
-  }
-  h3 {
-    font-size: 18px;
-    margin: 24px 0 8px;
-  }
-  p { margin: 0 0 16px; }
-  ul, ol { padding-left: 22px; margin: 0 0 16px; }
-  li { margin-bottom: 8px; }
-  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
-  a:hover { text-decoration: none; }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 22px;
-    margin: 20px 0;
-  }
-  .callout {
-    background: var(--accent-light);
-    border-left: 4px solid var(--accent);
-    padding: 16px 18px;
-    border-radius: 4px;
-    margin: 20px 0;
-  }
-  .callout strong { color: var(--accent); }
-  .tick-gallery {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin: 0 0 24px;
-  }
-  .tick-gallery figure {
-    margin: 0;
-    text-align: center;
-  }
-  .tick-gallery img {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .tick-gallery img:hover {
-    transform: scale(1.04);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  }
-  .tick-gallery figcaption {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 8px;
-    line-height: 1.4;
-  }
-  .tick-gallery figcaption strong {
-    display: block;
-    font-size: 13px;
-    color: var(--ink);
-    margin-bottom: 2px;
-  }
-  .tick-gallery .tick-tag {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-top: 6px;
-  }
-  .tick-tag.danger {
-    background: var(--warning-light);
-    color: var(--warning);
-  }
-  .tick-tag.caution {
-    background: #fff3cd;
-    color: #856404;
-  }
-  .tick-tag.low {
-    background: var(--accent-light);
-    color: var(--accent);
-  }
-  .warning {
-    background: var(--warning-light);
-    border-left: 4px solid var(--warning);
-    padding: 16px 18px;
-    border-radius: 4px;
-    margin: 20px 0;
-  }
-  .warning strong { color: var(--warning); }
-  .do-dont {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin: 20px 0;
-  }
-  .do, .dont {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px;
-  }
-  .do h4, .dont h4 {
-    margin: 0 0 12px;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .do h4 { color: var(--accent); }
-  .dont h4 { color: var(--warning); }
-  .do ul, .dont ul {
-    margin: 0;
-    padding-left: 18px;
-  }
-  .do li, .dont li {
-    font-size: 15px;
-    margin-bottom: 6px;
-  }
-  .timeline {
-    border-left: 2px solid var(--border);
-    padding-left: 20px;
-    margin: 20px 0;
-  }
-  .timeline-item {
-    margin-bottom: 20px;
+    overflow-x: hidden;
     position: relative;
   }
-  .timeline-item::before {
+  /* Grain overlay across the whole page */
+  body::before {
     content: "";
-    width: 12px;
-    height: 12px;
-    background: var(--accent);
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+
+  /* ===== Nav ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(15, 20, 16, 0.7);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo-dot {
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    position: absolute;
-    left: -27px;
-    top: 6px;
-  }
-  .timeline-label {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--accent);
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-  }
-  .cta {
-    display: inline-block;
     background: var(--accent);
-    color: white;
-    padding: 12px 22px;
-    border-radius: 8px;
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--ink-dim);
     text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--accent);
+    color: var(--bg) !important;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-weight: 600 !important;
+  }
+
+  /* ===== Hero / Map Section ===== */
+  .hero {
+    padding: 120px 32px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .hero-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-text { flex: 1; min-width: 300px; }
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(95, 191, 127, 0.12);
+    border: 1px solid rgba(95, 191, 127, 0.3);
+    border-radius: 100px;
+    font-size: 12px;
     font-weight: 600;
-    margin: 8px 0;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
   }
-  .cta:hover { background: #1f4e3a; text-decoration: none; }
-  .toc {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin: 24px 0;
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.5s infinite;
   }
-  .toc h4 {
-    margin: 0 0 10px;
-    font-size: 13px;
+  h1 {
+    font-family: var(--font-display);
+    font-size: 88px;
+    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -2.5px;
+    margin-bottom: 20px;
+    background: linear-gradient(180deg, #f5f3ec 0%, #a8a89e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+    background: none;
+    font-weight: 400;
+  }
+  .hero-sub {
+    font-size: 19px;
+    color: var(--ink-dim);
+    max-width: 540px;
+  }
+  .stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    text-align: right;
+  }
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: -1.5px;
+    color: var(--accent);
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(95,191,127,0.4);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--ink-dim);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--muted);
+    margin-top: 2px;
   }
-  .toc ol {
-    margin: 0;
-    padding-left: 20px;
+
+  /* ===== Map Container ===== */
+  .map-container {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border-strong);
+    background: var(--panel);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   }
-  .toc li { margin-bottom: 4px; }
-  footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    font-size: 14px;
-    color: var(--muted);
+  #map {
+    height: 600px;
+    width: 100%;
+    background: #0a0d0b;
+    z-index: 1;
   }
-  footer p { margin-bottom: 10px; }
-  .disclaimer {
+  .map-overlay-tl {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 500;
+    background: rgba(15, 20, 16, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 14px 16px;
+    max-width: 260px;
+  }
+  .map-overlay-tl h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ink-dim);
+    margin-bottom: 8px;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
     font-size: 13px;
+  }
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+  }
+  .map-overlay-br {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    z-index: 500;
+    background: rgba(15, 20, 16, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 14px 18px;
+  }
+  .index-value {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: -2px;
+    color: var(--warning);
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(255,140,90,0.6), 0 0 60px rgba(255,140,90,0.3);
+  }
+  .index-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--ink-dim);
+    margin-bottom: 6px;
+  }
+  .index-detail {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 4px;
+  }
+
+  /* ===== Activity Feed ===== */
+  .activity-strip {
+    max-width: 1400px;
+    margin: 24px auto 0;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  .activity-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+  }
+  .activity-card h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--ink-dim);
+    margin-bottom: 12px;
+  }
+  .feed-list {
+    list-style: none;
+    max-height: 120px;
+    overflow: hidden;
+    position: relative;
+  }
+  .feed-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    animation: fadeInUp 0.5s ease forwards;
+  }
+  .feed-item:last-child { border-bottom: none; }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .feed-time {
+    font-size: 11px;
     color: var(--muted);
+    min-width: 50px;
+  }
+  .feed-species {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .feed-place {
+    color: var(--ink-dim);
+    font-size: 12px;
+  }
+  .big-number {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .big-number.warn { color: var(--warning); text-shadow: 0 0 24px rgba(255,140,90,0.4); }
+  .big-number.danger { color: var(--danger); text-shadow: 0 0 24px rgba(232,90,79,0.4); }
+  .big-number.good { color: var(--accent); text-shadow: 0 0 24px rgba(95,191,127,0.4); }
+  .number-sub {
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+  .trend {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .trend.up { background: rgba(232,90,79,0.15); color: var(--danger); }
+  .trend.flat { background: rgba(168,168,158,0.15); color: var(--ink-dim); }
+
+  /* ===== Section: Species ===== */
+  section.species-section {
+    padding: 140px 32px 100px;
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+  }
+  section.species-section::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 1200px;
+    height: 600px;
+    background: radial-gradient(ellipse at center, rgba(232,90,79,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  section.species-section > * { position: relative; z-index: 1; }
+  .section-eyebrow {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 68px;
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+  }
+  h2 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .section-sub {
+    font-size: 18px;
+    color: var(--ink-dim);
+    max-width: 600px;
+    margin-bottom: 48px;
+  }
+  .species-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .species-card {
+    --card-accent: var(--accent);
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 24px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(.2,.8,.2,1), border-color 0.3s, box-shadow 0.4s, background 0.4s;
+    position: relative;
+    display: grid;
+    grid-template-columns: 38% 1fr;
+    min-height: 320px;
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.3),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+  /* Alternate image side every other card */
+  .species-card:nth-child(even) {
+    grid-template-columns: 1fr 38%;
+  }
+  .species-card:nth-child(even) .species-image {
+    order: 2;
+  }
+  .species-card:nth-child(even) .species-body {
+    order: 1;
+  }
+  .species-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top, var(--card-accent) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+  .species-card:hover {
+    transform: translateY(-8px);
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%);
+    border-color: rgba(255,255,255,0.28);
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.5),
+      0 0 0 1px var(--card-accent),
+      inset 0 1px 0 rgba(255,255,255,0.18);
+  }
+  .species-card:hover::before { opacity: 0.18; }
+  .species-card[data-species="blacklegged"] { --card-accent: #e85a4f; }
+  .species-card[data-species="dog"] { --card-accent: #d4a04a; }
+  .species-card[data-species="lonestar"] { --card-accent: #f0ebd8; }
+  .species-card[data-species="groundhog"] { --card-accent: #d4a247; }
+  .species-image {
+    aspect-ratio: unset;
+    min-height: 320px;
+    background:
+      radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--card-accent) 25%, transparent) 0%, transparent 65%),
+      linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .species-card:nth-child(even) .species-image {
+    border-right: none;
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .tick-art {
+    width: 68%;
+    max-width: 320px;
+    transition: transform 0.5s cubic-bezier(.2,.8,.2,1);
+    filter: drop-shadow(0 12px 30px rgba(0,0,0,0.6));
+  }
+  .tick-art img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .species-card:hover .tick-glyph,
+  .species-card:hover .tick-art { transform: scale(1.1) rotate(-3deg); }
+  .species-body {
+    padding: 44px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .species-tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .tag-danger { background: rgba(232,90,79,0.15); color: var(--danger); }
+  .tag-warn { background: rgba(255,140,90,0.15); color: var(--warning); }
+  .tag-watch { background: rgba(95,191,127,0.15); color: var(--accent); }
+  .species-name {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 400;
+    letter-spacing: -1.5px;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+  .species-latin {
+    font-style: italic;
+    color: var(--ink-dim);
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .species-blurb {
+    font-size: 16px;
+    color: var(--ink-dim);
+    line-height: 1.65;
+    margin-bottom: 24px;
+    max-width: 560px;
+  }
+  .species-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--card-accent);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: gap 0.3s;
+  }
+  .species-card:hover .species-cta { gap: 14px; }
+
+  /* ===== Species Modal ===== */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .modal-backdrop.open { display: flex; opacity: 1; }
+  .modal {
+    background: var(--bg-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 24px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+    transform: scale(0.96) translateY(20px);
+    transition: transform 0.3s cubic-bezier(.2,.8,.2,1);
+  }
+  .modal-backdrop.open .modal { transform: scale(1) translateY(0); }
+  .modal-hero {
+    aspect-ratio: 16 / 7;
+    background: linear-gradient(135deg, #2a322c 0%, #1b221d 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 24px 24px 0 0;
+  }
+  .modal-hero #modalGlyph { width: 60%; max-width: 360px; }
+  .modal-hero #modalGlyph img { width: 100%; height: auto; filter: drop-shadow(0 12px 30px rgba(0,0,0,0.5)); }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border-strong);
+    color: var(--ink);
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(0,0,0,0.8); }
+  .modal-body {
+    padding: 32px 40px 40px;
+  }
+  .modal-title {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: -1.5px;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+  .modal-latin {
+    font-style: italic;
+    color: var(--ink-dim);
+    margin-bottom: 24px;
+  }
+  .modal-section {
+    margin-top: 28px;
+  }
+  .modal-section h3 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .modal-section p, .modal-section li {
+    color: var(--ink-dim);
+    line-height: 1.65;
+  }
+  .modal-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  .modal-section li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+  }
+  .modal-section li::before {
+    content: "→";
+    color: var(--accent);
+    position: absolute;
+    left: 0;
+  }
+  .disease-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .pill {
+    padding: 6px 12px;
+    background: rgba(255,140,90,0.1);
+    border: 1px solid rgba(255,140,90,0.3);
+    border-radius: 100px;
+    font-size: 13px;
+    color: var(--warning);
+  }
+  .pill.severe {
+    background: rgba(232,90,79,0.1);
+    border-color: rgba(232,90,79,0.3);
+    color: var(--danger);
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .mini-stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .mini-stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+  }
+  .mini-stat-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ===== Bite Section ===== */
+  .bite-section {
+    background:
+      radial-gradient(ellipse at top, rgba(95,191,127,0.08) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    padding: 140px 32px;
+    border-top: 1px solid var(--border);
+    position: relative;
+  }
+  .bite-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .bite-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .bite-step {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .bite-step:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+  .step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 18px;
+  }
+  .bite-step h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .bite-step p {
+    font-size: 14px;
+    color: var(--ink-dim);
+  }
+  .bite-cta-row {
+    margin-top: 40px;
+    text-align: center;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(95,191,127,0.3);
+  }
+
+  /* ===== Footer ===== */
+  footer.site-footer {
+    border-top: 1px solid var(--border);
+    padding: 60px 32px 40px;
+    text-align: center;
+  }
+  .footer-inner { max-width: 1400px; margin: 0 auto; }
+  .footer-logo {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .footer-sources {
+    color: var(--ink-dim);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .footer-sources a { color: var(--ink-dim); text-decoration: underline; text-underline-offset: 3px; }
+  .footer-disclaimer {
+    color: var(--muted);
+    font-size: 12px;
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .demo-flag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255,140,90,0.12);
+    border: 1px solid rgba(255,140,90,0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--warning);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    margin-top: 16px;
+  }
+
+  /* ===== Editorial Pull Quotes ===== */
+  .pull-quote {
+    padding: 100px 32px;
+    background: var(--bg-2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .pull-quote::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(232,90,79,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .pull-quote-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .pull-quote-stat {
+    font-family: var(--font-display);
+    font-size: 120px;
+    line-height: 0.9;
+    font-weight: 400;
+    letter-spacing: -4px;
+    background: linear-gradient(180deg, var(--ink) 0%, var(--ink-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+  }
+  .pull-quote-stat em {
+    font-style: italic;
+    color: var(--danger);
+    -webkit-text-fill-color: var(--danger);
+    background: none;
+  }
+  .pull-quote-text {
+    font-family: var(--font-display);
+    font-size: 30px;
+    line-height: 1.3;
+    color: var(--ink-dim);
+    max-width: 760px;
+    margin: 0 auto;
     font-style: italic;
   }
-  @media (max-width: 600px) {
-    h1 { font-size: 28px; }
-    h2 { font-size: 22px; }
-    .do-dont { grid-template-columns: 1fr; }
-    .tick-gallery { grid-template-columns: repeat(2, 1fr); }
-    .wrap { padding: 20px 16px 60px; }
+  .pull-quote-cite {
+    margin-top: 24px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-style: normal;
+  }
+
+  /* ===== Scroll-triggered entrances ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(.2,.8,.2,1), transform 0.9s cubic-bezier(.2,.8,.2,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.08s; }
+  .reveal-delay-2 { transition-delay: 0.16s; }
+  .reveal-delay-3 { transition-delay: 0.24s; }
+
+  /* ===== Sticky FAB ===== */
+  .fab-wrap {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1500;
+  }
+  .fab {
+    background: var(--danger);
+    color: white;
+    border: none;
+    padding: 16px 22px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 12px 30px rgba(232,90,79,0.45), 0 4px 12px rgba(0,0,0,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+    letter-spacing: 0.3px;
+  }
+  .fab:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(232,90,79,0.55), 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .fab-icon {
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .fab-menu {
+    position: absolute;
+    bottom: calc(100% + 12px);
+    right: 0;
+    background: var(--bg-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    padding: 8px;
+    min-width: 240px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(.2,.8,.2,1);
+  }
+  .fab-menu.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  .fab-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    color: var(--ink);
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.15s;
+  }
+  .fab-menu a:hover { background: var(--panel); }
+  .fab-menu-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--panel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .fab-menu-text { line-height: 1.3; }
+  .fab-menu-sub {
+    font-size: 12px;
+    color: var(--ink-dim);
+    font-weight: 400;
+  }
+
+  /* ===== Last-updated timestamps ===== */
+  .timestamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+  .timestamp::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  /* ===== Ambient map animation ===== */
+  .ambient-ring {
+    animation: ambientPulse 4s ease-out infinite;
+    transform-origin: center;
+  }
+  .ambient-ring-0 { animation-delay: 0s; }
+  .ambient-ring-1 { animation-delay: 1.3s; }
+  .ambient-ring-2 { animation-delay: 2.6s; }
+  @keyframes ambientPulse {
+    0% { stroke-opacity: 0.7; stroke-width: 2; }
+    100% { stroke-opacity: 0; stroke-width: 12; }
+  }
+  /* Subtle scan-line overlay across map */
+  .map-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(95,191,127,0.0) 30%,
+      rgba(95,191,127,0.06) 50%,
+      rgba(95,191,127,0.0) 70%,
+      transparent 100%);
+    pointer-events: none;
+    animation: scanSweep 8s ease-in-out infinite;
+    z-index: 400;
+    mix-blend-mode: screen;
+  }
+  @keyframes scanSweep {
+    0%, 100% { left: -60%; }
+    50% { left: 100%; }
+  }
+
+  /* ===== Leaflet dark overrides ===== */
+  .leaflet-container {
+    background: #0a0d0b !important;
+    font-family: inherit !important;
+  }
+  .leaflet-popup-content-wrapper {
+    background: rgba(20, 26, 22, 0.95) !important;
+    color: var(--ink) !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--border-strong) !important;
+    backdrop-filter: blur(20px);
+  }
+  .leaflet-popup-tip {
+    background: rgba(20, 26, 22, 0.95) !important;
+  }
+  .leaflet-popup-content {
+    margin: 14px 18px !important;
+    font-size: 13px !important;
+  }
+  .leaflet-popup-content strong {
+    color: var(--accent);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .leaflet-control-zoom a {
+    background: rgba(20, 26, 22, 0.9) !important;
+    color: var(--ink) !important;
+    border-color: var(--border-strong) !important;
+  }
+  .leaflet-control-attribution {
+    background: rgba(20, 26, 22, 0.7) !important;
+    color: var(--muted) !important;
+  }
+  .leaflet-control-attribution a { color: var(--ink-dim) !important; }
+
+  /* ===== Geolocate button ===== */
+  .geo-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 500;
+    background: rgba(15, 20, 16, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 10px 16px;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+  .geo-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+  }
+  .geo-btn svg { width: 16px; height: 16px; }
+
+  /* ===== Personal Risk Card (appears after geolocate) ===== */
+  .personal-card {
+    background: linear-gradient(135deg, rgba(95,191,127,0.08) 0%, rgba(45,106,79,0.04) 100%);
+    border: 1px solid rgba(95,191,127,0.3);
+    border-radius: 20px;
+    padding: 32px;
+    margin: 32px auto 0;
+    max-width: 1400px;
+    display: none;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .personal-card.visible { display: flex; animation: fadeInUp 0.5s ease forwards; }
+  .personal-score {
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: 400;
+    letter-spacing: -3px;
+    line-height: 0.9;
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(95,191,127,0.5), 0 0 80px rgba(95,191,127,0.2);
+  }
+  .personal-score.high { color: var(--danger); text-shadow: 0 0 40px rgba(232,90,79,0.5), 0 0 80px rgba(232,90,79,0.2); }
+  .personal-score.moderate { color: var(--warning); text-shadow: 0 0 40px rgba(255,140,90,0.5), 0 0 80px rgba(255,140,90,0.2); }
+  .personal-info { flex: 1; min-width: 240px; }
+  .personal-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--ink-dim);
+    margin-bottom: 6px;
+  }
+  .personal-region {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .personal-tagline {
+    color: var(--ink-dim);
+    font-size: 15px;
+  }
+  .personal-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .personal-stat-block {
+    border-left: 2px solid var(--border-strong);
+    padding-left: 16px;
+  }
+  .personal-stat-block .v { font-size: 20px; font-weight: 700; }
+  .personal-stat-block .l { font-size: 12px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ===== Forecast Section ===== */
+  .forecast-section {
+    max-width: 1400px;
+    margin: 24px auto 0;
+    padding: 0 32px;
+  }
+  .forecast-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 32px;
+  }
+  .forecast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .forecast-title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .forecast-sub {
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin-top: 4px;
+  }
+  .forecast-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--bg);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .forecast-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--ink-dim);
+    padding: 8px 14px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .forecast-toggle button.active {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .forecast-chart {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    align-items: end;
+    height: 220px;
+    margin-bottom: 12px;
+  }
+  .forecast-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .forecast-day:hover { transform: translateY(-4px); }
+  .forecast-day-value {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 16px currentColor;
+    opacity: 0.95;
+  }
+  .forecast-bar {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    background: linear-gradient(180deg, currentColor 0%, transparent 100%);
+    border-bottom: 3px solid currentColor;
+    transition: height 0.6s cubic-bezier(.2,.8,.2,1);
+    min-height: 8px;
+    opacity: 0.85;
+  }
+  .forecast-day-label {
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .forecast-day-date {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .forecast-legend {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+    color: var(--ink-dim);
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .forecast-legend-item { display: flex; align-items: center; gap: 6px; }
+
+  /* ===== Size Comparison (LIGHT SECTION FLIP) ===== */
+  .size-section {
+    background: var(--cream);
+    color: var(--ink-dark);
+    padding: 140px 32px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    position: relative;
+  }
+  .size-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(212,160,74,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba(232,90,79,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .size-section .section-eyebrow {
+    color: #b8821e;
+  }
+  .size-section h2 {
+    color: var(--ink-dark);
+  }
+  .size-section h2 em {
+    color: #c75a3a;
+  }
+  .size-section .section-sub {
+    color: var(--ink-dark-dim);
+  }
+  .size-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .size-stage {
+    background: var(--cream-2);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 24px;
+    padding: 60px 40px;
+    margin: 40px 0 28px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+  }
+  .size-scene {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    margin-bottom: 40px;
+    min-height: 220px;
+    flex-wrap: wrap;
+  }
+  .coin {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #c4a560 0%, #8a7340 60%, #5a4828 100%);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), inset 0 -8px 20px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2a200f;
+    font-weight: 700;
+    font-size: 14px;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.2);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .coin::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 2px dashed rgba(0,0,0,0.15);
+  }
+  .tick-figure {
+    background: #2a1a0e;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #c75a3a, 0 8px 24px rgba(199,90,58,0.3);
+    transition: width 0.5s cubic-bezier(.2,.8,.2,1), height 0.5s cubic-bezier(.2,.8,.2,1);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c75a3a;
+    font-size: 10px;
+    font-weight: 700;
+    position: relative;
+  }
+  .tick-figure::before {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    border: 1px dashed rgba(199,90,58,0.4);
+    border-radius: 50%;
+  }
+  .size-slider-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .size-slider {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+    outline: none;
+    margin: 20px 0;
+  }
+  .size-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #c75a3a;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(199,90,58,0.5);
+    border: 3px solid var(--cream);
+  }
+  .size-slider::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #c75a3a;
+    cursor: pointer;
+    border: 3px solid var(--cream);
+  }
+  .size-stages {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 12px;
+    text-align: center;
+  }
+  .size-stage-label {
+    font-size: 11px;
+    color: var(--ink-dark-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    padding: 8px 4px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+  .size-stage-label.active {
+    background: rgba(199,90,58,0.12);
+    color: #c75a3a;
+  }
+  .size-readout {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .size-readout-item {
+    background: var(--cream);
+    padding: 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .size-readout-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink-dark-dim);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .size-readout-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink-dark);
+  }
+
+  /* ===== Symptom Tracker ===== */
+  .tracker-section {
+    padding: 100px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .tracker-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px;
+    margin-top: 40px;
+  }
+  .tracker-empty { text-align: center; }
+  .tracker-empty p { color: var(--ink-dim); margin-bottom: 24px; }
+  .date-input-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .date-input {
+    background: var(--bg);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--ink);
+    font-size: 15px;
+    font-family: inherit;
+    color-scheme: dark;
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--ink);
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .btn-secondary:hover { background: var(--panel); border-color: var(--accent); }
+  .tracker-active { display: none; }
+  .tracker-active.visible { display: block; }
+  .tracker-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .countdown-big {
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 400;
+    letter-spacing: -2.5px;
+    line-height: 0.9;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(95,191,127,0.4);
+  }
+  .countdown-sub {
+    color: var(--ink-dim);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  .progress-track {
+    background: var(--bg);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 24px 0;
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--warning) 70%, var(--danger) 100%);
+    border-radius: 5px;
+    transition: width 0.6s cubic-bezier(.2,.8,.2,1);
+  }
+  .milestone-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .milestone {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .milestone.reached {
+    border-color: var(--accent);
+    background: rgba(95,191,127,0.05);
+  }
+  .milestone.current {
+    border-color: var(--warning);
+    background: rgba(255,140,90,0.08);
+    box-shadow: 0 0 0 3px rgba(255,140,90,0.1);
+  }
+  .milestone-day {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .milestone-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--ink-dim);
+  }
+  .symptom-checklist {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .symptom-checklist h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+  }
+  .symptom-list { list-style: none; }
+  .symptom-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .symptom-item:hover { border-color: var(--border-strong); }
+  .symptom-item.checked {
+    border-color: var(--danger);
+    background: rgba(232,90,79,0.06);
+  }
+  .symptom-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--border-strong);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .symptom-item.checked .symptom-checkbox {
+    background: var(--danger);
+    border-color: var(--danger);
+    color: white;
+  }
+  .symptom-text { flex: 1; font-size: 14px; }
+  .symptom-severity {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 700;
+  }
+  .symptom-severity.red {
+    background: rgba(232,90,79,0.15);
+    color: var(--danger);
+  }
+  .symptom-severity.orange {
+    background: rgba(255,140,90,0.15);
+    color: var(--warning);
+  }
+  .tracker-alert {
+    margin-top: 20px;
+    padding: 18px;
+    background: rgba(232,90,79,0.1);
+    border: 1px solid var(--danger);
+    border-radius: 12px;
+    display: none;
+  }
+  .tracker-alert.visible { display: block; }
+  .tracker-alert strong { color: var(--danger); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 900px) {
+    h1 { font-size: 56px; letter-spacing: -1.5px; }
+    h2 { font-size: 44px; letter-spacing: -1.2px; }
+    .nav-links li:nth-child(-n+3) { display: none; }
+    .hero { padding: 100px 20px 40px; }
+    section.species-section, .bite-section, .size-section, .tracker-section { padding: 80px 20px; }
+    .pull-quote { padding: 70px 20px; }
+    .pull-quote-stat { font-size: 80px; letter-spacing: -2px; }
+    .pull-quote-text { font-size: 22px !important; }
+    .activity-strip { grid-template-columns: 1fr 1fr; padding: 0 20px; }
+    .stats { width: 100%; justify-content: space-between; }
+    .stat { text-align: left; }
+    .stat-value { font-size: 36px; }
+    .personal-score { font-size: 64px; }
+    .countdown-big { font-size: 56px; }
+    .index-value { font-size: 40px; }
+    .big-number { font-size: 38px; }
+    .modal-body { padding: 24px; }
+    .modal-title { font-size: 36px; }
+    .milestone-row { grid-template-columns: repeat(2, 1fr); }
+    .fab { padding: 14px 18px; font-size: 13px; }
+    /* Stack species cards on mobile */
+    .species-card,
+    .species-card:nth-child(even) {
+      grid-template-columns: 1fr;
+      min-height: unset;
+    }
+    .species-card:nth-child(even) .species-image { order: 0; }
+    .species-card:nth-child(even) .species-body { order: 0; }
+    .species-image { min-height: 240px; }
+    .species-body { padding: 28px 24px; }
+    .species-name { font-size: 34px; }
+    .tick-art { width: 60%; max-width: 220px; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-<header>
-  <div class="brand">TickWatch Ontario</div>
-  <h1>I found a tick. What do I do?</h1>
-  <p class="lede">A calm, step-by-step guide for Ontario. Most tick bites do not cause illness — but acting quickly and correctly matters.</p>
-</header>
-
-<div class="callout">
-  <strong>If you have any of these right now, go to the ER:</strong> chest pain, fainting, severe headache with stiff neck, sudden facial drooping, or trouble breathing. These can be signs of Lyme carditis or neurological Lyme disease.
-</div>
-
-<div class="toc">
-  <h4>What this page covers</h4>
-  <ol>
-    <li><a href="#remove">Remove the tick safely</a></li>
-    <li><a href="#save">Save the tick and identify it</a></li>
-    <li><a href="#pep">Should you get preventive antibiotics?</a></li>
-    <li><a href="#monitor">Watch for symptoms (30 days)</a></li>
-    <li><a href="#doctor">When to see a doctor</a></li>
-    <li><a href="#pets">If the tick was on a pet</a></li>
-  </ol>
-</div>
-
-<h2 id="remove"><span class="step">1</span>Remove the tick</h2>
-
-<p>Use <strong>fine-tipped tweezers</strong> (pointed, not the blunt eyebrow kind) or a tick-removal card. Speed matters — the longer a tick is attached, the higher the chance of disease transmission.</p>
-
-<div class="card">
-  <h3>How to remove it</h3>
-  <ol>
-    <li>Grasp the tick <strong>as close to your skin as possible</strong>, right at the mouthparts.</li>
-    <li>Pull <strong>straight up</strong> with steady, even pressure. Don't twist, jerk, or yank.</li>
-    <li>If the mouthparts break off and don't come out easily, leave them — your skin will expel them like a splinter. Retained mouthparts do not transmit Lyme.</li>
-    <li>Wash the bite with soap and water, then disinfect with rubbing alcohol.</li>
-    <li>Wash your hands.</li>
-  </ol>
-</div>
-
-<div class="do-dont">
-  <div class="do">
-    <h4>✓ Do</h4>
-    <ul>
-      <li>Use fine-tipped tweezers</li>
-      <li>Pull straight up, steadily</li>
-      <li>Save the tick (see step 2)</li>
-      <li>Note the date and bite location</li>
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo"><span class="logo-dot"></span>TickWatch Ontario</div>
+    <ul class="nav-links">
+      <li><a href="#map-section">Live Map</a></li>
+      <li><a href="#species">Tick Species</a></li>
+      <li><a href="#size">Sizes</a></li>
+      <li><a href="#tracker">Tracker</a></li>
+      <li><a href="#bite">If Bitten</a></li>
+      <li><a href="tick-bite-guide.html" class="nav-cta">Bite Guide</a></li>
     </ul>
   </div>
-  <div class="dont">
-    <h4>✗ Don't</h4>
-    <ul>
-      <li>Burn it with a match</li>
-      <li>Smother it with Vaseline or nail polish</li>
-      <li>Twist or yank</li>
-      <li>Crush it with your fingers</li>
-    </ul>
+</nav>
+
+<!-- ===== HERO + MAP ===== -->
+<section class="hero" id="map-section">
+  <div class="hero-header">
+    <div class="hero-text reveal">
+      <div class="live-badge"><span class="live-dot"></span>Live · updated continuously</div>
+      <h1>Ontario has a<br>tick <em>problem.</em></h1>
+      <p class="hero-sub">Here's where they are right now, what species are spreading, and exactly what to do if one bites you.</p>
+    </div>
+    <div class="stats reveal reveal-delay-1">
+      <div class="stat">
+        <div class="stat-value">3,210</div>
+        <div class="stat-label">Lyme cases 2025</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">+18%</div>
+        <div class="stat-label">vs. last year</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">9.5 mo</div>
+        <div class="stat-label">tick season</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-container">
+    <div class="map-overlay-tl">
+      <h4>Risk Level by Region</h4>
+      <div class="timestamp" id="mapTimestamp" style="margin-bottom: 10px;">Updated just now</div>
+      <div class="legend-row"><div class="legend-swatch" style="background:#e85a4f"></div>Established / High</div>
+      <div class="legend-row"><div class="legend-swatch" style="background:#ff8c5a"></div>Emerging / Moderate</div>
+      <div class="legend-row"><div class="legend-swatch" style="background:#f5d76e"></div>Watch / Low</div>
+      <div class="legend-row"><div class="legend-swatch" style="background:#5fbf7f"></div>Minimal</div>
+    </div>
+    <button class="geo-btn" id="geoBtn" title="Find ticks near me">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></svg>
+      Near me
+    </button>
+    <div class="map-overlay-br">
+      <div class="index-label">Today's Activity Index</div>
+      <div class="index-value" id="indexValue">7.4</div>
+      <div class="index-detail">Southern Ontario · High</div>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <div class="activity-strip">
+    <div class="activity-card">
+      <h4 style="display:flex; justify-content:space-between; align-items:center;">
+        <span>Live Sightings Feed</span>
+        <span class="timestamp" id="feedTimestamp">live</span>
+      </h4>
+      <ul class="feed-list" id="feedList"></ul>
+    </div>
+    <div class="activity-card">
+      <h4>Submissions Today</h4>
+      <div class="big-number warn" id="submissionsToday">142</div>
+      <div class="number-sub">via eTick + community</div>
+      <span class="trend up">▲ 23% vs. yesterday</span>
+    </div>
+    <div class="activity-card">
+      <h4>Active Species</h4>
+      <div class="big-number good">4</div>
+      <div class="number-sub">in Ontario this week</div>
+      <span class="trend flat">— same as last week</span>
+    </div>
+    <div class="activity-card">
+      <h4>Hottest Region</h4>
+      <div class="big-number danger" style="font-size: 22px; line-height: 1.2;">Leeds, Grenville<br>& Lanark</div>
+      <div class="number-sub" style="margin-top: 6px;">298 cases / 100k</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PERSONAL RISK CARD (post-geolocate) ===== -->
+<div class="personal-card" id="personalCard">
+  <div>
+    <div class="personal-label">Your Area</div>
+    <div class="personal-score" id="personalScore">—</div>
+  </div>
+  <div class="personal-info">
+    <div class="personal-region" id="personalRegion">Locating…</div>
+    <div class="personal-tagline" id="personalTagline">We're finding your local tick risk.</div>
+  </div>
+  <div class="personal-stats">
+    <div class="personal-stat-block">
+      <div class="v" id="personalCases">—</div>
+      <div class="l">cases / 100k</div>
+    </div>
+    <div class="personal-stat-block">
+      <div class="v" id="personalSpecies">—</div>
+      <div class="l">dominant species</div>
+    </div>
+    <div class="personal-stat-block">
+      <div class="v" id="personalDistance">—</div>
+      <div class="l">nearest hotspot</div>
+    </div>
   </div>
 </div>
 
-<div class="warning">
-  <strong>Why no Vaseline, matches, or nail polish?</strong> These methods stress the tick and make it regurgitate its stomach contents — including Lyme bacteria — into the bite. Health Canada, Public Health Ontario, and the CDC all warn against them.
-</div>
-
-<h2 id="save"><span class="step">2</span>Save the tick and identify it</h2>
-
-<p>Knowing the <em>species</em> of tick is the single most useful piece of information for deciding what to do next. In Ontario, only the <strong>blacklegged tick (deer tick)</strong> transmits Lyme disease.</p>
-
-<div class="card">
-  <h3>Common ticks in Ontario — know what bit you</h3>
-  <div class="tick-gallery">
-    <figure>
-      <img src="Tick images/tick1.png" alt="Blacklegged tick (deer tick) — orange-red scutum and dark brown body" />
-      <figcaption>
-        <strong>Blacklegged Tick</strong>
-        <em>Ixodes scapularis</em>
-        <span class="tick-tag danger">⚠ Transmits Lyme</span>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="Tick images/tick2.png" alt="American Dog Tick — brown body with ornate white markings on scutum" />
-      <figcaption>
-        <strong>American Dog Tick</strong>
-        <em>Dermacentor variabilis</em>
-        <span class="tick-tag caution">Rocky Mtn Spotted Fever</span>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="Tick images/tick3.png" alt="Lone Star Tick — brown body with single white spot on back" />
-      <figcaption>
-        <strong>Lone Star Tick</strong>
-        <em>Amblyomma americanum</em>
-        <span class="tick-tag caution">Alpha-gal / Ehrlichiosis</span>
-      </figcaption>
-    </figure>
-    <figure>
-      <img src="Tick images/tick4.png" alt="Asian Longhorned Tick — golden-tan body, no markings" />
-      <figcaption>
-        <strong>Asian Longhorned Tick</strong>
-        <em>Haemaphysalis longicornis</em>
-        <span class="tick-tag low">Low risk to humans</span>
-      </figcaption>
-    </figure>
+<!-- ===== 7-DAY FORECAST ===== -->
+<section class="forecast-section">
+  <div class="forecast-card">
+    <div class="forecast-header">
+      <div>
+        <div class="forecast-title">7-Day Tick Activity Forecast</div>
+        <div class="forecast-sub">Based on temperature, humidity, and questing models · Southern Ontario</div>
+        <div class="timestamp" id="forecastTimestamp" style="margin-top: 8px;">Model run at 6:00 AM</div>
+      </div>
+      <div class="forecast-toggle">
+        <button class="active" data-region="south">Southern</button>
+        <button data-region="east">Eastern</button>
+        <button data-region="north">Northern</button>
+      </div>
+    </div>
+    <div class="forecast-chart" id="forecastChart"></div>
+    <div class="forecast-legend">
+      <div class="forecast-legend-item"><div style="width:10px;height:10px;background:#5fbf7f;border-radius:2px"></div>Low (0-3)</div>
+      <div class="forecast-legend-item"><div style="width:10px;height:10px;background:#f5d76e;border-radius:2px"></div>Moderate (4-6)</div>
+      <div class="forecast-legend-item"><div style="width:10px;height:10px;background:#ff8c5a;border-radius:2px"></div>High (7-8)</div>
+      <div class="forecast-legend-item"><div style="width:10px;height:10px;background:#e85a4f;border-radius:2px"></div>Very high (9-10)</div>
+    </div>
   </div>
-  <h3>How to save it</h3>
-  <ul>
-    <li>Drop the tick into a small Ziploc bag or screw-top container.</li>
-    <li>Take a clear, in-focus photo of its <strong>back</strong> on a light surface, with a coin for scale.</li>
-    <li>Label it: date found, location on your body, and geographic location of likely exposure (park, trail, backyard).</li>
-  </ul>
-</div>
+</section>
 
-<a class="cta" href="https://www.etick.ca" target="_blank" rel="noopener">Submit your tick to eTick.ca →</a>
-
-<p style="margin-top: 12px;"><a href="https://www.etick.ca" target="_blank" rel="noopener">eTick.ca</a> is a free service run by Bishop's University. Trained acarologists will identify your tick from a photo, usually within 24–48 hours. They do not test for diseases — but species ID is what your doctor or pharmacist actually needs.</p>
-
-<div class="callout">
-  <strong>Why not test the tick for Lyme?</strong> Ontario's public health labs no longer routinely test removed ticks. A positive tick doesn't mean you were infected, and the result comes back too slowly to guide treatment. Decisions are made on species + attachment time + your symptoms, not on tick PCR.
-</div>
-
-<h2 id="pep"><span class="step">3</span>Should you get preventive antibiotics?</h2>
-
-<p>For high-risk bites, a <strong>single 200 mg dose of doxycycline</strong> taken within 72 hours can significantly reduce the risk of developing Lyme disease. This is called post-exposure prophylaxis (PEP).</p>
-
-<div class="card">
-  <h3>You may be a candidate if <em>all</em> of these are true:</h3>
-  <ol>
-    <li>The tick is identified as a <strong>blacklegged tick (Ixodes scapularis)</strong>, adult or nymph.</li>
-    <li>It was attached for <strong>36 hours or more</strong> (look for engorgement — a tick that hasn't fed looks flat).</li>
-    <li>You can start treatment <strong>within 72 hours</strong> of removing it.</li>
-    <li>The bite happened in a <strong>Lyme-endemic area of Ontario</strong> (most of southern and eastern Ontario — see <a href="https://www.publichealthontario.ca/en/Data-and-Analysis/Infectious-Disease/Lyme-Disease" target="_blank" rel="noopener">PHO's risk area map</a>).</li>
-    <li>You have no medical reason you can't take doxycycline.</li>
-  </ol>
-</div>
-
-<div class="callout">
-  <strong>In Ontario, pharmacists can prescribe this.</strong> Since January 2023, Ontario pharmacists can assess and prescribe single-dose doxycycline for Lyme PEP under the Minor Ailments Program — no doctor visit needed. This is often the fastest route. Walk into any pharmacy with your tick and ID.
-</div>
-
-<p>Other prescribers: family doctor, nurse practitioner, walk-in clinic, or Telehealth Ontario (call 811).</p>
-
-<h2 id="monitor"><span class="step">4</span>Watch for symptoms for 30 days</h2>
-
-<p>Mark today's date on a calendar. Symptoms of Lyme and other tick-borne illnesses can appear anywhere from 3 days to several weeks after a bite.</p>
-
-<div class="timeline">
-  <div class="timeline-item">
-    <div class="timeline-label">Day 3–30 — Most common</div>
-    <p><strong>Expanding red rash</strong> at the bite site (erythema migrans). The classic "bullseye" pattern only appears in about 70–80% of cases — many rashes are solid red, oval, or in hidden places (scalp, groin, behind a knee). Any expanding rash at or near the bite is a red flag.</p>
+<!-- ===== PULL QUOTE 1 ===== -->
+<section class="pull-quote">
+  <div class="pull-quote-inner">
+    <div class="pull-quote-stat reveal"><em>5,000+</em></div>
+    <p class="pull-quote-text reveal reveal-delay-1">Canadians got Lyme disease last year. <br>A decade ago, that number was just <em style="color:var(--accent)">144</em>.</p>
+    <div class="pull-quote-cite reveal reveal-delay-2">Source: Public Health Agency of Canada</div>
   </div>
-  <div class="timeline-item">
-    <div class="timeline-label">Day 3–30 — Flu-like</div>
-    <p>Fever, chills, fatigue, headache, muscle and joint aches, swollen lymph nodes — especially if it's the wrong season for flu.</p>
+</section>
+
+<!-- ===== SPECIES ===== -->
+<section class="species-section" id="species">
+  <div class="section-eyebrow">Know your enemy</div>
+  <h2>Four ticks every<br>Ontarian should <em>know.</em></h2>
+  <p class="section-sub">Tap any tick to see what it looks like, where it lives, what it carries, and what to do if it bites you.</p>
+
+  <div class="species-grid" id="speciesGrid"></div>
+</section>
+
+<!-- ===== SIZE COMPARISON ===== -->
+<section class="size-section" id="size">
+  <div class="size-inner">
+    <div class="section-eyebrow">Smaller than you think</div>
+    <h2>How big is a tick, <em>really?</em></h2>
+    <p class="section-sub" style="margin-left:auto;margin-right:auto;">Nymphs cause most Lyme disease cases — and they're about the size of a poppy seed. Slide to compare each life stage against a Canadian quarter.</p>
+
+    <div class="size-stage">
+      <div class="size-scene">
+        <div class="coin">QUARTER<br>(23.9mm)</div>
+        <div class="tick-figure" id="tickFigure" style="width:14px;height:14px;"></div>
+      </div>
+
+      <div class="size-slider-wrap">
+        <input type="range" min="0" max="3" value="1" step="1" class="size-slider" id="sizeSlider">
+        <div class="size-stages">
+          <div class="size-stage-label" data-stage="0">Larva</div>
+          <div class="size-stage-label active" data-stage="1">Nymph</div>
+          <div class="size-stage-label" data-stage="2">Adult</div>
+          <div class="size-stage-label" data-stage="3">Engorged</div>
+        </div>
+      </div>
+
+      <div class="size-readout">
+        <div class="size-readout-item">
+          <div class="size-readout-label">Size</div>
+          <div class="size-readout-value" id="sizeReadoutSize">1.5 mm</div>
+        </div>
+        <div class="size-readout-item">
+          <div class="size-readout-label">Compared to</div>
+          <div class="size-readout-value" id="sizeReadoutCompare">Poppy seed</div>
+        </div>
+        <div class="size-readout-item">
+          <div class="size-readout-label">Risk level</div>
+          <div class="size-readout-value" id="sizeReadoutRisk" style="color:var(--danger);">Highest</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="color: var(--ink-dark-dim); font-size: 15px; max-width: 600px; margin: 0 auto; line-height: 1.7;" id="sizeBlurb">
+      <strong style="color:var(--ink-dark)">Nymphs are why ticks are dangerous.</strong> They're active May through July, infected with Lyme bacteria from their mouse hosts, and so small that most bites are never noticed. Always do a tick check after time outdoors.
+    </p>
   </div>
-  <div class="timeline-item">
-    <div class="timeline-label">Weeks later</div>
-    <p>Facial drooping (Bell's palsy), severe headache with stiff neck, shooting nerve pains, heart palpitations, lightheadedness.</p>
+</section>
+
+<!-- ===== PULL QUOTE 2 ===== -->
+<section class="pull-quote">
+  <div class="pull-quote-inner">
+    <p class="pull-quote-text reveal" style="font-size: 38px; max-width: 900px; color: var(--ink);">"A nymph tick is the size of a <em style="color:var(--warning)">poppy seed.</em> Most people who get Lyme disease never saw the tick that bit them."</p>
+    <div class="pull-quote-cite reveal reveal-delay-1">— Public Health Ontario</div>
   </div>
-  <div class="timeline-item">
-    <div class="timeline-label">Months later</div>
-    <p>Joint swelling and pain — most often in the knee.</p>
+</section>
+
+<!-- ===== SYMPTOM TRACKER ===== -->
+<section class="tracker-section" id="tracker">
+  <div class="section-eyebrow">30-day watch</div>
+  <h2>Bitten? <em>Track</em> your symptoms.</h2>
+  <p class="section-sub">Symptoms can appear from 3 days to a month after a tick bite. We'll remind you what to watch for at the critical checkpoints — and flag anything serious.</p>
+
+  <div class="tracker-card">
+    <div class="tracker-empty" id="trackerEmpty">
+      <p>Enter the date you were bitten to start your 30-day symptom watch. Data is saved only on your device — nothing is sent anywhere.</p>
+      <div class="date-input-row">
+        <input type="date" class="date-input" id="biteDate">
+        <button class="btn-primary" id="startTracker">Start tracking</button>
+      </div>
+    </div>
+
+    <div class="tracker-active" id="trackerActive">
+      <div class="tracker-header-row">
+        <div>
+          <div class="personal-label">Days since bite</div>
+          <div class="countdown-big" id="daysSince">0</div>
+          <div class="countdown-sub" id="biteDateDisplay"></div>
+        </div>
+        <button class="btn-secondary" id="resetTracker">Reset tracker</button>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%;"></div>
+      </div>
+
+      <div class="milestone-row">
+        <div class="milestone" data-day="3">
+          <div class="milestone-day">Day 3</div>
+          <div class="milestone-label">First check</div>
+        </div>
+        <div class="milestone" data-day="7">
+          <div class="milestone-day">Day 7</div>
+          <div class="milestone-label">Rash window</div>
+        </div>
+        <div class="milestone" data-day="14">
+          <div class="milestone-day">Day 14</div>
+          <div class="milestone-label">Peak EM rash</div>
+        </div>
+        <div class="milestone" data-day="30">
+          <div class="milestone-day">Day 30</div>
+          <div class="milestone-label">All clear</div>
+        </div>
+      </div>
+
+      <div class="symptom-checklist">
+        <h4>Have you experienced any of these?</h4>
+        <ul class="symptom-list" id="symptomList"></ul>
+        <div class="tracker-alert" id="trackerAlert">
+          <strong>You've flagged a red-flag symptom.</strong> See a doctor or call Health811 today. If you have chest pain, fainting, severe headache, or facial drooping, go to the emergency room now.
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="warning">
-  <strong>The bullseye is a myth — sort of.</strong> About 20–30% of people with Lyme never get a bullseye rash. No rash does <em>not</em> mean no Lyme. If you have flu-like symptoms in the weeks after a tick bite, see a doctor.
-</div>
+<!-- ===== BITE SECTION ===== -->
+<section class="bite-section" id="bite">
+  <div class="bite-inner">
+    <div class="section-eyebrow">If you've been bitten</div>
+    <h2>Six steps. <em>Five minutes.</em></h2>
+    <p class="section-sub">Most tick bites don't cause illness — but acting fast and correctly matters. Here's exactly what to do.</p>
 
-<h2 id="doctor"><span class="step">5</span>When to see a doctor</h2>
+    <div class="bite-grid">
+      <div class="bite-step">
+        <div class="step-number">1</div>
+        <h3>Remove it</h3>
+        <p>Fine-tipped tweezers, grab close to skin, pull straight up steadily. No twisting, matches, or Vaseline.</p>
+      </div>
+      <div class="bite-step">
+        <div class="step-number">2</div>
+        <h3>Save & photograph</h3>
+        <p>Ziploc bag plus a clear photo on a light background with a coin for scale.</p>
+      </div>
+      <div class="bite-step">
+        <div class="step-number">3</div>
+        <h3>Submit to eTick</h3>
+        <p>Free expert identification within 24-48 hours — the species matters more than testing the tick.</p>
+      </div>
+      <div class="bite-step">
+        <div class="step-number">4</div>
+        <h3>Check PEP eligibility</h3>
+        <p>Blacklegged tick + attached ≥36h + endemic area? Ontario pharmacists can prescribe single-dose doxycycline.</p>
+      </div>
+      <div class="bite-step">
+        <div class="step-number">5</div>
+        <h3>Watch for 30 days</h3>
+        <p>Expanding rash, flu-like symptoms, joint pain, facial drooping — see a doctor immediately if any appear.</p>
+      </div>
+      <div class="bite-step">
+        <div class="step-number">6</div>
+        <h3>Know the red flags</h3>
+        <p>Chest pain, severe headache, palpitations = ER now. These can signal Lyme carditis or neurological Lyme.</p>
+      </div>
+    </div>
 
-<div class="warning">
-  <strong>Go to the emergency room immediately</strong> if you have: chest pain or palpitations, fainting, severe headache with stiff neck, sudden facial drooping, or trouble breathing.
-</div>
+    <div class="bite-cta-row">
+      <a href="tick-bite-guide.html" class="btn-primary">Open the full bite guide →</a>
+    </div>
+  </div>
+</section>
 
-<h3>See a doctor within a day or two if:</h3>
-<ul>
-  <li>An expanding red rash at or near the bite (with or without bullseye pattern)</li>
-  <li>Fever, chills, severe headache, or unusual fatigue in the 3–30 days after a bite</li>
-  <li>Joint swelling, especially the knee</li>
-  <li>You're pregnant and had a tick bite</li>
-  <li>The tick was a <strong>Lone Star tick</strong> (rare in Ontario, but rising — they can trigger a serious meat allergy called alpha-gal syndrome)</li>
-</ul>
-
-<h3>Diagnostic testing</h3>
-<p>Ontario uses a two-tier blood test (ELISA followed by Western Blot). Important caveats:</p>
-<ul>
-  <li>Antibodies take <strong>2–6 weeks</strong> to develop. Testing in the first 2–4 weeks of illness often comes back falsely negative.</li>
-  <li>If you have a clear bullseye rash and known tick exposure, your doctor should treat you without waiting for blood test results.</li>
-  <li>Other tick-borne infections (anaplasmosis, babesiosis) need separate tests.</li>
-</ul>
-
-<h2 id="pets"><span class="step">6</span>If the tick was on a pet</h2>
-
-<p>Remove it the same way — fine-tipped tweezers, close to the skin, steady upward pull. Dogs can get Lyme disease, anaplasmosis, ehrlichiosis, and babesiosis.</p>
-
-<p><strong>Call your vet if your dog develops:</strong> lethargy, lameness (especially shifting from leg to leg), fever, loss of appetite, swollen joints, or reluctance to move in the weeks after a bite.</p>
-
-<p>Ask your vet about year-round tick prevention — Ontario's tick season is now 9–10 months long, and most vets now recommend year-round coverage in the south.</p>
-
-<footer>
-  <p><strong>Sources:</strong> <a href="https://www.publichealthontario.ca/en/Diseases-and-Conditions/Infectious-Diseases/Vector-Borne-Zoonotic-Diseases/Lyme-Disease" target="_blank" rel="noopener">Public Health Ontario</a> · <a href="https://www.canada.ca/en/public-health/services/diseases/lyme-disease.html" target="_blank" rel="noopener">Government of Canada</a> · <a href="https://www.cdc.gov/ticks/" target="_blank" rel="noopener">CDC</a> · <a href="https://www.etick.ca" target="_blank" rel="noopener">eTick.ca</a> · <a href="https://www.idsociety.org/practice-guideline/lyme-disease/" target="_blank" rel="noopener">IDSA 2020 Lyme Guidelines</a></p>
-  <p class="disclaimer">This page is general health information for Ontario residents, not medical advice. For a specific tick bite or symptoms, contact a pharmacist, doctor, or call Health811 (811). In an emergency, call 911 or go to the nearest emergency department.</p>
-  <p class="disclaimer">© TickWatch Ontario · Last reviewed May 2026</p>
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">TickWatch Ontario</div>
+    <div class="footer-sources">
+      Sources: <a href="https://www.publichealthontario.ca/en/Diseases-and-Conditions/Infectious-Diseases/Vector-Borne-Zoonotic-Diseases/Lyme-Disease" target="_blank">Public Health Ontario</a> ·
+      <a href="https://www.canada.ca/en/public-health/services/diseases/lyme-disease.html" target="_blank">Government of Canada</a> ·
+      <a href="https://www.etick.ca" target="_blank">eTick.ca</a> ·
+      <a href="https://www.cdc.gov/ticks/" target="_blank">CDC</a>
+    </div>
+    <p class="footer-disclaimer">General health information for Ontario residents. Not medical advice. For a specific bite or symptoms, contact a pharmacist, doctor, or Health811. In emergencies call 911.</p>
+    <div class="demo-flag">⚠ Demo data — map and feed values are simulated for prototype purposes</div>
+  </div>
 </footer>
 
+<!-- ===== STICKY FAB ===== -->
+<div class="fab-wrap">
+  <div class="fab-menu" id="fabMenu">
+    <a href="tick-bite-guide.html">
+      <div class="fab-menu-icon">🩹</div>
+      <div class="fab-menu-text">
+        Full bite guide
+        <div class="fab-menu-sub">Step-by-step for Ontario</div>
+      </div>
+    </a>
+    <a href="#tracker">
+      <div class="fab-menu-icon">📅</div>
+      <div class="fab-menu-text">
+        Start 30-day tracker
+        <div class="fab-menu-sub">Watch for symptoms</div>
+      </div>
+    </a>
+    <a href="https://www.etick.ca" target="_blank" rel="noopener">
+      <div class="fab-menu-icon">📷</div>
+      <div class="fab-menu-text">
+        Submit to eTick.ca
+        <div class="fab-menu-sub">Free expert ID in 24-48h</div>
+      </div>
+    </a>
+    <a href="#species">
+      <div class="fab-menu-icon">🔍</div>
+      <div class="fab-menu-text">
+        Identify the tick
+        <div class="fab-menu-sub">Compare species</div>
+      </div>
+    </a>
+    <a href="tel:811">
+      <div class="fab-menu-icon">📞</div>
+      <div class="fab-menu-text">
+        Call Health811
+        <div class="fab-menu-sub">Ontario nurse helpline</div>
+      </div>
+    </a>
+  </div>
+  <button class="fab" id="fabBtn">
+    <span class="fab-icon">!</span>
+    I found a tick
+  </button>
 </div>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modal">
+    <div class="modal-hero">
+      <div id="modalGlyph"></div>
+      <button class="modal-close" id="modalClose">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   TICK SVG ILLUSTRATIONS
+   Anatomically inspired hand-drawn SVGs per species
+   ========================================================= */
+const tickImages = {
+  blacklegged: 'Tick images/tick1.png',
+  dog: 'Tick images/tick2.png',
+  lonestar: 'Tick images/tick3.png',
+  groundhog: 'Tick images/tick4.png'
+};
+const tickSVG = {
+  blacklegged: `
+    <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" class="tick-svg">
+      <defs>
+        <radialGradient id="bl-body" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#d94824"/>
+          <stop offset="60%" stop-color="#a8341a"/>
+          <stop offset="100%" stop-color="#5a1f0e"/>
+        </radialGradient>
+        <radialGradient id="bl-scutum" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#3a3a3a"/>
+          <stop offset="100%" stop-color="#0a0a0a"/>
+        </radialGradient>
+      </defs>
+      <!-- Legs -->
+      <g stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round" fill="none">
+        <path d="M 95 105 Q 70 95 55 75 Q 50 65 45 50"/>
+        <path d="M 95 120 Q 65 120 45 115 Q 35 112 25 105"/>
+        <path d="M 95 135 Q 65 145 45 155 Q 35 160 25 170"/>
+        <path d="M 95 145 Q 70 160 55 180 Q 50 188 45 195"/>
+        <path d="M 145 105 Q 170 95 185 75 Q 190 65 195 50"/>
+        <path d="M 145 120 Q 175 120 195 115 Q 205 112 215 105"/>
+        <path d="M 145 135 Q 175 145 195 155 Q 205 160 215 170"/>
+        <path d="M 145 145 Q 170 160 185 180 Q 190 188 195 195"/>
+      </g>
+      <!-- Body (engorged-looking abdomen) -->
+      <ellipse cx="120" cy="125" rx="50" ry="42" fill="url(#bl-body)" stroke="#3a0d05" stroke-width="1.5"/>
+      <!-- Scutum (dark shield - blacklegged signature) -->
+      <ellipse cx="120" cy="100" rx="34" ry="26" fill="url(#bl-scutum)" stroke="#000" stroke-width="1"/>
+      <!-- Scutum highlight -->
+      <ellipse cx="113" cy="92" rx="10" ry="6" fill="rgba(255,255,255,0.08)"/>
+      <!-- Festoons (the ridges along back edge) -->
+      <g fill="#3a0d05" opacity="0.6">
+        <circle cx="80" cy="160" r="2"/>
+        <circle cx="92" cy="166" r="2"/>
+        <circle cx="106" cy="168" r="2"/>
+        <circle cx="120" cy="169" r="2"/>
+        <circle cx="134" cy="168" r="2"/>
+        <circle cx="148" cy="166" r="2"/>
+        <circle cx="160" cy="160" r="2"/>
+      </g>
+      <!-- Capitulum (head/mouthparts) -->
+      <path d="M 110 78 Q 120 60 130 78 L 128 86 L 112 86 Z" fill="#1a1a1a" stroke="#000" stroke-width="1"/>
+      <!-- Mouthparts -->
+      <line x1="118" y1="58" x2="116" y2="48" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="122" y1="58" x2="124" y2="48" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+      <line x1="120" y1="56" x2="120" y2="44" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/>
+      <!-- Eyes -->
+      <circle cx="104" cy="95" r="2" fill="#000"/>
+      <circle cx="136" cy="95" r="2" fill="#000"/>
+    </svg>
+  `,
+  dog: `
+    <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" class="tick-svg">
+      <defs>
+        <radialGradient id="dt-body" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#7a5a35"/>
+          <stop offset="100%" stop-color="#3a2818"/>
+        </radialGradient>
+        <pattern id="dt-marble" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="#5a4525"/>
+          <path d="M 0 5 Q 5 0 10 5 T 20 5" stroke="#d4c4a0" stroke-width="1.5" fill="none" opacity="0.8"/>
+          <path d="M 0 12 Q 5 7 10 12 T 20 12" stroke="#e8d8b0" stroke-width="1.2" fill="none" opacity="0.6"/>
+          <circle cx="5" cy="15" r="1.5" fill="#d4c4a0" opacity="0.7"/>
+          <circle cx="15" cy="3" r="1.2" fill="#e8d8b0" opacity="0.6"/>
+        </pattern>
+      </defs>
+      <g stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round" fill="none">
+        <path d="M 95 105 Q 70 95 55 75 Q 50 65 45 50"/>
+        <path d="M 95 120 Q 65 120 45 115 Q 35 112 25 105"/>
+        <path d="M 95 135 Q 65 145 45 155 Q 35 160 25 170"/>
+        <path d="M 95 145 Q 70 160 55 180 Q 50 188 45 195"/>
+        <path d="M 145 105 Q 170 95 185 75 Q 190 65 195 50"/>
+        <path d="M 145 120 Q 175 120 195 115 Q 205 112 215 105"/>
+        <path d="M 145 135 Q 175 145 195 155 Q 205 160 215 170"/>
+        <path d="M 145 145 Q 170 160 185 180 Q 190 188 195 195"/>
+      </g>
+      <ellipse cx="120" cy="125" rx="50" ry="42" fill="url(#dt-body)" stroke="#2a1808" stroke-width="1.5"/>
+      <!-- Ornate marbled scutum - signature of dog tick -->
+      <ellipse cx="120" cy="100" rx="34" ry="26" fill="url(#dt-marble)" stroke="#1a1208" stroke-width="1"/>
+      <!-- Additional marble highlights on scutum -->
+      <ellipse cx="105" cy="92" rx="6" ry="3" fill="#e8d8b0" opacity="0.7"/>
+      <ellipse cx="130" cy="95" rx="5" ry="2.5" fill="#d4c4a0" opacity="0.6"/>
+      <ellipse cx="118" cy="108" rx="4" ry="2" fill="#e8d8b0" opacity="0.5"/>
+      <g fill="#2a1808" opacity="0.6">
+        <circle cx="80" cy="160" r="2"/>
+        <circle cx="92" cy="166" r="2"/>
+        <circle cx="106" cy="168" r="2"/>
+        <circle cx="120" cy="169" r="2"/>
+        <circle cx="134" cy="168" r="2"/>
+        <circle cx="148" cy="166" r="2"/>
+        <circle cx="160" cy="160" r="2"/>
+      </g>
+      <path d="M 110 78 Q 120 60 130 78 L 128 86 L 112 86 Z" fill="#1a1208" stroke="#000" stroke-width="1"/>
+      <line x1="118" y1="58" x2="116" y2="48" stroke="#1a1208" stroke-width="2" stroke-linecap="round"/>
+      <line x1="122" y1="58" x2="124" y2="48" stroke="#1a1208" stroke-width="2" stroke-linecap="round"/>
+      <line x1="120" y1="56" x2="120" y2="44" stroke="#1a1208" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="104" cy="95" r="2" fill="#000"/>
+      <circle cx="136" cy="95" r="2" fill="#000"/>
+    </svg>
+  `,
+  lonestar: `
+    <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" class="tick-svg">
+      <defs>
+        <radialGradient id="ls-body" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#8a3a1a"/>
+          <stop offset="100%" stop-color="#4a1d08"/>
+        </radialGradient>
+      </defs>
+      <g stroke="#1a1a1a" stroke-width="3.5" stroke-linecap="round" fill="none">
+        <path d="M 95 105 Q 70 95 55 75 Q 50 65 45 50"/>
+        <path d="M 95 120 Q 65 120 45 115 Q 35 112 25 105"/>
+        <path d="M 95 135 Q 65 145 45 155 Q 35 160 25 170"/>
+        <path d="M 95 145 Q 70 160 55 180 Q 50 188 45 195"/>
+        <path d="M 145 105 Q 170 95 185 75 Q 190 65 195 50"/>
+        <path d="M 145 120 Q 175 120 195 115 Q 205 112 215 105"/>
+        <path d="M 145 135 Q 175 145 195 155 Q 205 160 215 170"/>
+        <path d="M 145 145 Q 170 160 185 180 Q 190 188 195 195"/>
+      </g>
+      <ellipse cx="120" cy="125" rx="50" ry="42" fill="url(#ls-body)" stroke="#2a0d04" stroke-width="1.5"/>
+      <ellipse cx="120" cy="100" rx="34" ry="26" fill="#5a2a15" stroke="#2a0d04" stroke-width="1"/>
+      <!-- The signature LONE STAR — bright white dot -->
+      <circle cx="120" cy="100" r="9" fill="#f5f0e0" stroke="#d4c4a0" stroke-width="1"/>
+      <circle cx="118" cy="98" r="3" fill="#ffffff" opacity="0.8"/>
+      <!-- White streaks along rear margin (male marking, simplified) -->
+      <g fill="#e8d8b0" opacity="0.6">
+        <ellipse cx="88" cy="155" rx="3" ry="1.5"/>
+        <ellipse cx="152" cy="155" rx="3" ry="1.5"/>
+        <ellipse cx="120" cy="160" rx="2" ry="1"/>
+      </g>
+      <g fill="#2a0d04" opacity="0.6">
+        <circle cx="80" cy="160" r="2"/>
+        <circle cx="92" cy="166" r="2"/>
+        <circle cx="106" cy="168" r="2"/>
+        <circle cx="120" cy="169" r="2"/>
+        <circle cx="134" cy="168" r="2"/>
+        <circle cx="148" cy="166" r="2"/>
+        <circle cx="160" cy="160" r="2"/>
+      </g>
+      <!-- Long mouthparts - characteristic of lone star -->
+      <path d="M 108 78 Q 120 55 132 78 L 128 86 L 112 86 Z" fill="#2a0d04" stroke="#000" stroke-width="1"/>
+      <line x1="117" y1="55" x2="114" y2="40" stroke="#2a0d04" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="123" y1="55" x2="126" y2="40" stroke="#2a0d04" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="120" y1="52" x2="120" y2="36" stroke="#2a0d04" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="104" cy="95" r="2" fill="#000"/>
+      <circle cx="136" cy="95" r="2" fill="#000"/>
+    </svg>
+  `,
+  groundhog: `
+    <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" class="tick-svg">
+      <defs>
+        <radialGradient id="gh-body" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#c4a060"/>
+          <stop offset="100%" stop-color="#7a5a35"/>
+        </radialGradient>
+        <radialGradient id="gh-scutum" cx="50%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#b89758"/>
+          <stop offset="100%" stop-color="#6a4a28"/>
+        </radialGradient>
+      </defs>
+      <g stroke="#3a2818" stroke-width="3.5" stroke-linecap="round" fill="none">
+        <path d="M 95 105 Q 70 95 55 75 Q 50 65 45 50"/>
+        <path d="M 95 120 Q 65 120 45 115 Q 35 112 25 105"/>
+        <path d="M 95 135 Q 65 145 45 155 Q 35 160 25 170"/>
+        <path d="M 95 145 Q 70 160 55 180 Q 50 188 45 195"/>
+        <path d="M 145 105 Q 170 95 185 75 Q 190 65 195 50"/>
+        <path d="M 145 120 Q 175 120 195 115 Q 205 112 215 105"/>
+        <path d="M 145 135 Q 175 145 195 155 Q 205 160 215 170"/>
+        <path d="M 145 145 Q 170 160 185 180 Q 190 188 195 195"/>
+      </g>
+      <!-- Rounder, more uniform body shape than blacklegged -->
+      <ellipse cx="120" cy="125" rx="48" ry="44" fill="url(#gh-body)" stroke="#3a2818" stroke-width="1.5"/>
+      <!-- Scutum is similar tone to body (no contrast - the key giveaway) -->
+      <ellipse cx="120" cy="100" rx="33" ry="25" fill="url(#gh-scutum)" stroke="#3a2818" stroke-width="1"/>
+      <ellipse cx="113" cy="92" rx="9" ry="5" fill="rgba(255,255,255,0.12)"/>
+      <g fill="#3a2818" opacity="0.5">
+        <circle cx="80" cy="160" r="2"/>
+        <circle cx="92" cy="166" r="2"/>
+        <circle cx="106" cy="168" r="2"/>
+        <circle cx="120" cy="169" r="2"/>
+        <circle cx="134" cy="168" r="2"/>
+        <circle cx="148" cy="166" r="2"/>
+        <circle cx="160" cy="160" r="2"/>
+      </g>
+      <path d="M 110 78 Q 120 60 130 78 L 128 86 L 112 86 Z" fill="#3a2818" stroke="#1a1208" stroke-width="1"/>
+      <line x1="118" y1="58" x2="116" y2="48" stroke="#3a2818" stroke-width="2" stroke-linecap="round"/>
+      <line x1="122" y1="58" x2="124" y2="48" stroke="#3a2818" stroke-width="2" stroke-linecap="round"/>
+      <line x1="120" y1="56" x2="120" y2="44" stroke="#3a2818" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="104" cy="95" r="2" fill="#1a1208"/>
+      <circle cx="136" cy="95" r="2" fill="#1a1208"/>
+    </svg>
+  `
+};
+
+/* =========================================================
+   SPECIES DATA
+   ========================================================= */
+const species = [
+  {
+    id: 'blacklegged',
+    name: 'Blacklegged Tick',
+    latin: 'Ixodes scapularis',
+    glyph: 'blacklegged',
+    tag: 'danger', tagText: 'Highest Risk',
+    blurb: 'Ontario\'s most dangerous tick. Carries Lyme disease and is rapidly expanding north — including into Toronto, Ottawa, and Muskoka.',
+    overview: 'The blacklegged tick (also called the deer tick) is responsible for nearly all Lyme disease in Ontario. It\'s spread aggressively over the past decade and now has established populations across most of southern Ontario.',
+    id_features: [
+      'Adult female: 3-4mm, black scutum with reddish-orange abdomen',
+      'Adult male: 2.5mm, uniformly dark reddish-brown to black',
+      'Nymph: 1.5mm — about the size of a poppy seed',
+      'No ornate markings (unlike dog ticks)',
+      'Easily confused with the groundhog tick — when in doubt, submit to eTick.ca'
+    ],
+    diseases: [
+      { name: 'Lyme disease', severity: 'severe' },
+      { name: 'Anaplasmosis', severity: 'severe' },
+      { name: 'Babesiosis', severity: 'severe' },
+      { name: 'Powassan virus', severity: 'severe' },
+      { name: 'Borrelia miyamotoi', severity: 'warn' }
+    ],
+    habitat: 'Deciduous and mixed forests, leaf litter, forest edges, increasingly suburban yards.',
+    season: 'Adults: April-May, October-November. Nymphs: late May through July (peak biting season).',
+    distribution: 'Established: Long Point, Thousand Islands, Ottawa Valley, Prince Edward County, Wainfleet, Pinery, Rouge Park. Emerging: Sudbury, North Bay, Muskoka, Toronto.',
+    action: 'Submit to eTick.ca immediately. If attached 36+ hours in an endemic area, ask an Ontario pharmacist about single-dose doxycycline PEP within 72 hours.'
+  },
+  {
+    id: 'dog',
+    name: 'American Dog Tick',
+    latin: 'Dermacentor variabilis',
+    glyph: 'dog',
+    tag: 'warn', tagText: 'Moderate Risk',
+    blurb: 'Common across Ontario fields and meadows. Doesn\'t spread Lyme, but can transmit Rocky Mountain spotted fever and cause tick paralysis.',
+    overview: 'The American dog tick is widespread in Ontario and was historically the most-submitted tick before blacklegged ticks took over. Prefers grassy open areas, not forests.',
+    id_features: [
+      'Adult female: 5mm, dark brown body with prominent ornate cream/white scutum',
+      'Adult male: 3.6mm, brown with intricate silver/cream marbled pattern across the back',
+      'Engorged female: up to 15mm, slate-gray, bean-shaped',
+      'The ornate marbled scutum is diagnostic'
+    ],
+    diseases: [
+      { name: 'Rocky Mountain spotted fever', severity: 'severe' },
+      { name: 'Tularemia', severity: 'warn' },
+      { name: 'Tick paralysis', severity: 'warn' }
+    ],
+    habitat: 'Grassy meadows, fields, trail edges, low vegetation. Distinctly NOT a forest tick.',
+    season: 'Adults active April through August, peaking late spring/early summer.',
+    distribution: 'Widely established across southern and central Ontario, including the GTA and as far north as the southern fringe of the Canadian Shield.',
+    action: 'Remove and save it. Does not transmit Lyme, so no PEP needed. Watch for fever or rash in the 2 weeks following the bite.'
+  },
+  {
+    id: 'lonestar',
+    name: 'Lone Star Tick',
+    latin: 'Amblyomma americanum',
+    glyph: 'lonestar',
+    tag: 'warn', tagText: 'Emerging Threat',
+    blurb: 'Not yet established in Ontario — but increasingly detected. Can cause alpha-gal syndrome, a delayed allergy to red meat.',
+    overview: 'Aggressive human-biters at every life stage. Migratory birds drop lone star ticks across southern Ontario each spring, and Public Health Ontario expects establishment within the decade.',
+    id_features: [
+      'Adult female: 4mm, reddish-brown with a single unmistakable white dot in the center of the back',
+      'Adult male: 3mm, reddish-brown with scattered white streaks along the rear margin',
+      'Nymphs and larvae bite humans aggressively — larvae ("seed ticks") often in swarms',
+      'The bright white "lone star" on the female is diagnostic'
+    ],
+    diseases: [
+      { name: 'Alpha-gal syndrome', severity: 'severe' },
+      { name: 'Ehrlichiosis', severity: 'severe' },
+      { name: 'Heartland virus', severity: 'severe' },
+      { name: 'Bourbon virus', severity: 'severe' },
+      { name: 'STARI', severity: 'warn' },
+      { name: 'Tularemia', severity: 'warn' }
+    ],
+    habitat: 'Dense underbrush, woodland edges, second-growth forests with brushy understory.',
+    season: 'Adults April through August. Nymphs and larvae May through July.',
+    distribution: 'Not established. Adventitious finds increasing in southwestern Ontario and along Lake Erie via migrating birds.',
+    action: 'Submit to eTick.ca — confirmed lone star sightings help track the species\' northward spread. If you develop hives or anaphylaxis after eating red meat in the weeks after a bite, ask your doctor about alpha-gal testing.'
+  },
+  {
+    id: 'groundhog',
+    name: 'Groundhog Tick',
+    latin: 'Ixodes cookei',
+    glyph: 'groundhog',
+    tag: 'watch', tagText: 'Often Misidentified',
+    blurb: 'Native to Ontario and often confused with the blacklegged tick. Rarely bites humans — but is the original Powassan virus vector.',
+    overview: 'Named for the town of Powassan, Ontario, where the virus it transmits was first identified. This tick lives in animal burrows and rarely encounters people, but is widely misidentified as a deer tick — falsely inflating Lyme risk reports.',
+    id_features: [
+      'Adult female: 3mm, uniformly honey-tan to light yellowish-brown',
+      'Lacks the sharp red-and-black contrast of the female blacklegged tick',
+      'More rounded body shape than Ixodes scapularis',
+      'Expert microscopy or eTick.ca submission required for definitive ID'
+    ],
+    diseases: [
+      { name: 'Powassan virus (Lineage I)', severity: 'severe' }
+    ],
+    habitat: 'Burrows and nests of groundhogs, skunks, raccoons, and foxes — does NOT quest on vegetation.',
+    season: 'Adults active May through August.',
+    distribution: 'Native and widespread across all of southern, central, and parts of northern Ontario.',
+    action: 'Submit to eTick.ca — many "blacklegged tick" reports are actually this species. Does not transmit Lyme. Powassan transmission is extremely rare but serious.'
+  }
+];
+
+/* =========================================================
+   RENDER SPECIES CARDS
+   ========================================================= */
+const grid = document.getElementById('speciesGrid');
+species.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'species-card';
+  card.setAttribute('data-species', s.glyph);
+  card.innerHTML = `
+    <div class="species-image">
+      <div class="tick-art"><img src="${tickImages[s.glyph]}" alt="${s.name}" /></div>
+    </div>
+    <div class="species-body">
+      <span class="species-tag tag-${s.tag}">${s.tagText}</span>
+      <div class="species-name">${s.name}</div>
+      <div class="species-latin">${s.latin}</div>
+      <p class="species-blurb">${s.blurb}</p>
+      <span class="species-cta">Learn more →</span>
+    </div>
+  `;
+  card.addEventListener('click', () => openModal(s));
+  grid.appendChild(card);
+});
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+const backdrop = document.getElementById('modalBackdrop');
+const modalBody = document.getElementById('modalBody');
+const modalGlyph = document.getElementById('modalGlyph');
+
+function openModal(s) {
+  modalGlyph.innerHTML = `<img src="${tickImages[s.glyph]}" alt="${s.name}" />`;
+  const diseasePills = s.diseases.map(d =>
+    `<span class="pill ${d.severity === 'severe' ? 'severe' : ''}">${d.name}</span>`
+  ).join('');
+
+  modalBody.innerHTML = `
+    <span class="species-tag tag-${s.tag}">${s.tagText}</span>
+    <h2 class="modal-title">${s.name}</h2>
+    <p class="modal-latin">${s.latin}</p>
+    <p style="color: var(--ink-dim); font-size: 16px; line-height: 1.7;">${s.overview}</p>
+
+    <div class="modal-section">
+      <h3>How to identify it</h3>
+      <ul>${s.id_features.map(f => `<li>${f}</li>`).join('')}</ul>
+    </div>
+
+    <div class="modal-section">
+      <h3>Diseases it can transmit</h3>
+      <div class="disease-pills">${diseasePills}</div>
+    </div>
+
+    <div class="modal-section">
+      <h3>Where & when</h3>
+      <div class="stat-grid">
+        <div class="mini-stat">
+          <div class="mini-stat-label">Habitat</div>
+          <div class="mini-stat-value">${s.habitat}</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-label">Active season</div>
+          <div class="mini-stat-value">${s.season}</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-stat-label">Ontario distribution</div>
+          <div class="mini-stat-value">${s.distribution}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3>If it bites you</h3>
+      <p>${s.action}</p>
+    </div>
+  `;
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+backdrop.addEventListener('click', (e) => {
+  if (e.target === backdrop) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+/* =========================================================
+   LEAFLET MAP — Ontario Health Unit Risk Visualization
+   Simulated data — boundaries approximated for prototype
+   ========================================================= */
+const map = L.map('map', {
+  center: [46.5, -82.0],
+  zoom: 5,
+  zoomControl: true,
+  scrollWheelZoom: false,
+  attributionControl: true
+});
+
+// Dark tile layer (CartoDB dark matter)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+  attribution: '© OpenStreetMap, © CARTO · Demo data',
+  maxZoom: 19
+}).addTo(map);
+
+// Add labels overlay for cities
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png', {
+  attribution: '',
+  maxZoom: 19
+}).addTo(map);
+
+// Health unit risk zones — approximate circular regions (demo)
+const riskZones = [
+  { name: 'Leeds, Grenville & Lanark', lat: 44.85, lng: -75.95, radius: 50000, risk: 'high', cases: 298, species: 'Blacklegged' },
+  { name: 'Kingston / Frontenac', lat: 44.23, lng: -76.48, radius: 45000, risk: 'high', cases: 215, species: 'Blacklegged' },
+  { name: 'Ottawa Public Health', lat: 45.42, lng: -75.69, radius: 35000, risk: 'high', cases: 178, species: 'Blacklegged' },
+  { name: 'Hastings Prince Edward', lat: 44.30, lng: -77.30, radius: 45000, risk: 'high', cases: 152, species: 'Blacklegged' },
+  { name: 'Eastern Ontario (Cornwall)', lat: 45.02, lng: -74.73, radius: 40000, risk: 'high', cases: 134, species: 'Blacklegged' },
+  { name: 'Toronto Public Health', lat: 43.65, lng: -79.38, radius: 30000, risk: 'moderate', cases: 87, species: 'Blacklegged' },
+  { name: 'Durham Region', lat: 43.95, lng: -78.85, radius: 35000, risk: 'moderate', cases: 76, species: 'Blacklegged' },
+  { name: 'Niagara Region', lat: 43.10, lng: -79.20, radius: 30000, risk: 'high', cases: 124, species: 'Blacklegged' },
+  { name: 'Haldimand-Norfolk (Long Point)', lat: 42.78, lng: -80.30, radius: 35000, risk: 'high', cases: 188, species: 'Blacklegged' },
+  { name: 'Simcoe Muskoka', lat: 44.40, lng: -79.65, radius: 50000, risk: 'moderate', cases: 64, species: 'Blacklegged' },
+  { name: 'Peterborough', lat: 44.30, lng: -78.32, radius: 35000, risk: 'moderate', cases: 81, species: 'Blacklegged' },
+  { name: 'Halton Region', lat: 43.53, lng: -79.87, radius: 25000, risk: 'moderate', cases: 58, species: 'Blacklegged' },
+  { name: 'Peel Region', lat: 43.72, lng: -79.76, radius: 25000, risk: 'moderate', cases: 49, species: 'Blacklegged' },
+  { name: 'York Region', lat: 44.05, lng: -79.45, radius: 30000, risk: 'moderate', cases: 67, species: 'Blacklegged' },
+  { name: 'Hamilton Public Health', lat: 43.26, lng: -79.87, radius: 25000, risk: 'moderate', cases: 53, species: 'Blacklegged' },
+  { name: 'Wellington-Dufferin-Guelph', lat: 43.83, lng: -80.25, radius: 35000, risk: 'low', cases: 32, species: 'Dog tick' },
+  { name: 'Waterloo Region', lat: 43.46, lng: -80.52, radius: 25000, risk: 'low', cases: 28, species: 'Dog tick' },
+  { name: 'Middlesex-London', lat: 42.98, lng: -81.25, radius: 30000, risk: 'low', cases: 41, species: 'Blacklegged' },
+  { name: 'Southwestern (Elgin/Oxford)', lat: 42.85, lng: -80.95, radius: 35000, risk: 'low', cases: 36, species: 'Mixed' },
+  { name: 'Windsor-Essex', lat: 42.30, lng: -82.95, radius: 30000, risk: 'low', cases: 24, species: 'Mixed' },
+  { name: 'Chatham-Kent', lat: 42.40, lng: -82.18, radius: 25000, risk: 'low', cases: 18, species: 'Mixed' },
+  { name: 'Lambton', lat: 42.97, lng: -82.10, radius: 25000, risk: 'low', cases: 21, species: 'Dog tick' },
+  { name: 'Huron Perth', lat: 43.65, lng: -81.40, radius: 30000, risk: 'low', cases: 19, species: 'Dog tick' },
+  { name: 'Grey Bruce', lat: 44.55, lng: -81.10, radius: 40000, risk: 'low', cases: 27, species: 'Mixed' },
+  { name: 'Haliburton-Kawartha-Pine Ridge', lat: 44.65, lng: -78.55, radius: 50000, risk: 'moderate', cases: 73, species: 'Blacklegged' },
+  { name: 'Renfrew', lat: 45.55, lng: -77.00, radius: 50000, risk: 'moderate', cases: 42, species: 'Blacklegged' },
+  { name: 'North Bay Parry Sound', lat: 46.30, lng: -79.45, radius: 60000, risk: 'minimal', cases: 14, species: 'Adventitious' },
+  { name: 'Sudbury & District', lat: 46.49, lng: -80.99, radius: 70000, risk: 'minimal', cases: 11, species: 'Adventitious' },
+  { name: 'Algoma', lat: 46.51, lng: -84.32, radius: 80000, risk: 'minimal', cases: 6, species: 'Adventitious' },
+  { name: 'Thunder Bay', lat: 48.38, lng: -89.25, radius: 80000, risk: 'minimal', cases: 8, species: 'Adventitious' },
+  { name: 'Porcupine', lat: 48.47, lng: -81.33, radius: 80000, risk: 'minimal', cases: 3, species: 'None established' },
+  { name: 'Northwestern', lat: 50.10, lng: -91.92, radius: 100000, risk: 'minimal', cases: 4, species: 'Adventitious' }
+];
+
+const riskColors = {
+  high: { fill: '#e85a4f', stroke: '#e85a4f', label: 'High Risk' },
+  moderate: { fill: '#ff8c5a', stroke: '#ff8c5a', label: 'Moderate' },
+  low: { fill: '#f5d76e', stroke: '#f5d76e', label: 'Low / Watch' },
+  minimal: { fill: '#5fbf7f', stroke: '#5fbf7f', label: 'Minimal' }
+};
+
+// Add ambient pulsing rings on top hotspots BEFORE drawing zone circles
+const hotspots = [...riskZones]
+  .filter(z => z.risk === 'high')
+  .sort((a,b) => b.cases - a.cases)
+  .slice(0, 4);
+
+hotspots.forEach((h, idx) => {
+  for (let i = 0; i < 3; i++) {
+    L.circle([h.lat, h.lng], {
+      radius: h.radius * 1.2,
+      color: '#e85a4f',
+      fillColor: 'transparent',
+      weight: 2,
+      opacity: 0.5,
+      interactive: false,
+      className: `ambient-ring ambient-ring-${i} ambient-hotspot-${idx}`
+    }).addTo(map);
+  }
+});
+
+riskZones.forEach(z => {
+  const c = riskColors[z.risk];
+  const circle = L.circle([z.lat, z.lng], {
+    radius: z.radius,
+    color: c.stroke,
+    fillColor: c.fill,
+    fillOpacity: 0.35,
+    weight: 1.5,
+    opacity: 0.8
+  }).addTo(map);
+  circle.bindPopup(`
+    <strong>${z.name}</strong>
+    Risk: ${c.label}<br>
+    Cases / 100k: ${z.cases}<br>
+    Dominant species: ${z.species}
+  `);
+});
+
+/* =========================================================
+   SIMULATED LIVE SIGHTINGS — pulsing pins
+   ========================================================= */
+const sightingPlaces = [
+  { name: 'Rouge National Urban Park', lat: 43.81, lng: -79.16 },
+  { name: 'Algonquin Provincial Park (south)', lat: 45.55, lng: -78.38 },
+  { name: 'Bruce Trail near Hamilton', lat: 43.39, lng: -79.99 },
+  { name: 'Thousand Islands Park', lat: 44.40, lng: -75.99 },
+  { name: 'Prince Edward County trails', lat: 43.96, lng: -77.13 },
+  { name: 'Pinery Provincial Park', lat: 43.25, lng: -81.82 },
+  { name: 'Rondeau Provincial Park', lat: 42.27, lng: -81.85 },
+  { name: 'High Park, Toronto', lat: 43.65, lng: -79.46 },
+  { name: 'Gatineau Park (Ottawa side)', lat: 45.50, lng: -75.85 },
+  { name: 'Wainfleet Bog', lat: 42.92, lng: -79.32 }
+];
+
+const speciesNames = ['Blacklegged tick', 'American dog tick', 'Groundhog tick', 'Blacklegged nymph'];
+
+const sightingsLayer = L.layerGroup().addTo(map);
+
+function addSighting(s) {
+  const marker = L.circleMarker([s.lat, s.lng], {
+    radius: 6,
+    fillColor: '#5fbf7f',
+    color: '#5fbf7f',
+    weight: 2,
+    opacity: 0.9,
+    fillOpacity: 0.7,
+    className: 'pulse-marker'
+  }).addTo(sightingsLayer);
+  marker.bindPopup(`
+    <strong>${s.species}</strong>
+    ${s.place}<br>
+    Reported ${s.time}
+  `);
+  return marker;
+}
+
+// CSS pulse animation for markers
+const pulseStyle = document.createElement('style');
+pulseStyle.textContent = `
+  .pulse-marker {
+    animation: leafletPulse 2s infinite;
+  }
+  @keyframes leafletPulse {
+    0%, 100% { stroke-opacity: 0.9; stroke-width: 2; }
+    50% { stroke-opacity: 0.3; stroke-width: 8; }
+  }
+`;
+document.head.appendChild(pulseStyle);
+
+/* =========================================================
+   SIMULATED LIVE FEED
+   ========================================================= */
+const feedList = document.getElementById('feedList');
+function timeAgo(min) {
+  if (min < 1) return 'just now';
+  if (min < 60) return min + 'm ago';
+  return Math.floor(min / 60) + 'h ago';
+}
+
+function randomSighting() {
+  const place = sightingPlaces[Math.floor(Math.random() * sightingPlaces.length)];
+  const sp = speciesNames[Math.floor(Math.random() * speciesNames.length)];
+  return { ...place, species: sp, time: 'just now' };
+}
+
+// Seed initial feed
+const initialFeed = [
+  { species: 'Blacklegged tick', place: 'Rouge Park', mins: 4 },
+  { species: 'Blacklegged nymph', place: 'Thousand Islands', mins: 12 },
+  { species: 'American dog tick', place: 'High Park', mins: 27 },
+  { species: 'Blacklegged tick', place: 'Gatineau Park', mins: 41 }
+];
+
+function renderFeed(items) {
+  feedList.innerHTML = items.slice(0, 4).map(item => `
+    <li class="feed-item">
+      <span class="feed-time">${typeof item.mins === 'number' ? timeAgo(item.mins) : item.time}</span>
+      <span class="feed-species">${item.species}</span>
+      <span class="feed-place">· ${item.place}</span>
+    </li>
+  `).join('');
+}
+renderFeed(initialFeed);
+
+// Add some initial sightings to map
+sightingPlaces.slice(0, 6).forEach(p => {
+  addSighting({ ...p, species: speciesNames[Math.floor(Math.random() * speciesNames.length)], place: p.name, time: 'recently' });
+});
+
+// Simulate live updates every ~8 seconds
+let submissionsCount = 142;
+setInterval(() => {
+  const s = randomSighting();
+  // Add to feed
+  initialFeed.unshift({ species: s.species, place: s.name, mins: 0 });
+  initialFeed.forEach((item, i) => {
+    if (i > 0 && typeof item.mins === 'number') item.mins += Math.floor(Math.random() * 3 + 1);
+  });
+  if (initialFeed.length > 4) initialFeed.pop();
+  renderFeed(initialFeed);
+
+  // Add pin to map
+  addSighting({ ...s, place: s.name });
+
+  // Update counter
+  submissionsCount += Math.floor(Math.random() * 2 + 1);
+  document.getElementById('submissionsToday').textContent = submissionsCount;
+
+  // Refresh timestamps
+  lastFeedUpdate = Date.now();
+  lastMapUpdate = Date.now();
+  updateTimestamps();
+}, 8000);
+
+/* =========================================================
+   SCROLL-TRIGGERED REVEALS
+   ========================================================= */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// Also auto-tag headlines and section subs for reveal
+document.querySelectorAll('section h2, section .section-eyebrow, section .section-sub').forEach((el, i) => {
+  if (!el.classList.contains('reveal')) {
+    el.classList.add('reveal');
+    if (el.tagName === 'H2') el.classList.add('reveal-delay-1');
+    if (el.classList.contains('section-sub')) el.classList.add('reveal-delay-2');
+    revealObserver.observe(el);
+  }
+});
+
+/* =========================================================
+   LAST-UPDATED TIMESTAMPS
+   ========================================================= */
+let lastMapUpdate = Date.now();
+let lastFeedUpdate = Date.now();
+
+function relativeTime(timestamp) {
+  const seconds = Math.floor((Date.now() - timestamp) / 1000);
+  if (seconds < 5) return 'just now';
+  if (seconds < 60) return seconds + 's ago';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return minutes + 'm ago';
+  return Math.floor(minutes / 60) + 'h ago';
+}
+
+function updateTimestamps() {
+  document.getElementById('mapTimestamp').textContent = 'Updated ' + relativeTime(lastMapUpdate);
+  document.getElementById('feedTimestamp').textContent = relativeTime(lastFeedUpdate);
+}
+setInterval(updateTimestamps, 5000);
+
+// Forecast timestamp: show today's run time
+const forecastTime = new Date();
+forecastTime.setHours(6, 0, 0, 0);
+document.getElementById('forecastTimestamp').textContent =
+  'Model run at ' + forecastTime.toLocaleTimeString('en-CA', { hour: 'numeric', minute: '2-digit' }) +
+  ' · ' + forecastTime.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' });
+
+// Animate index value subtly
+let baseIndex = 7.4;
+setInterval(() => {
+  const variation = (Math.random() - 0.5) * 0.4;
+  const newVal = Math.max(0, Math.min(10, baseIndex + variation));
+  document.getElementById('indexValue').textContent = newVal.toFixed(1);
+}, 5000);
+
+/* =========================================================
+   GEOLOCATION — "Find ticks near me"
+   ========================================================= */
+const geoBtn = document.getElementById('geoBtn');
+const personalCard = document.getElementById('personalCard');
+
+function haversine(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLng = toRad(lng2 - lng1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function findNearestZone(lat, lng) {
+  let nearest = null;
+  let minDist = Infinity;
+  riskZones.forEach(z => {
+    const d = haversine(lat, lng, z.lat, z.lng);
+    if (d < minDist) {
+      minDist = d;
+      nearest = z;
+    }
+  });
+  return { zone: nearest, distance: minDist };
+}
+
+function riskScoreFromZone(zone) {
+  const scores = { high: 8.5, moderate: 6.0, low: 3.5, minimal: 1.5 };
+  return scores[zone.risk] || 5;
+}
+
+function showPersonal(lat, lng, useFallback = false) {
+  const { zone, distance } = findNearestZone(lat, lng);
+  const score = riskScoreFromZone(zone);
+  const scoreEl = document.getElementById('personalScore');
+  scoreEl.textContent = score.toFixed(1);
+  scoreEl.className = 'personal-score ' + zone.risk;
+  document.getElementById('personalRegion').textContent = zone.name + (useFallback ? ' (approx.)' : '');
+  const taglines = {
+    high: 'Tick activity is high. Use repellent and check for ticks after every outing.',
+    moderate: 'Established tick populations nearby. Take normal precautions outdoors.',
+    low: 'Lower risk, but ticks have been detected. Stay aware.',
+    minimal: 'Minimal established risk — but adventitious ticks do appear.'
+  };
+  document.getElementById('personalTagline').textContent = taglines[zone.risk];
+  document.getElementById('personalCases').textContent = zone.cases;
+  document.getElementById('personalSpecies').textContent = zone.species;
+  document.getElementById('personalDistance').textContent = distance < 1 ? '< 1 km' : Math.round(distance) + ' km';
+  personalCard.classList.add('visible');
+  map.flyTo([lat, lng], 9, { duration: 1.5 });
+  L.marker([lat, lng]).addTo(map).bindPopup('<strong>You are here</strong>').openPopup();
+}
+
+geoBtn.addEventListener('click', () => {
+  geoBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></svg> Locating…';
+  if (!navigator.geolocation) {
+    showPersonal(43.65, -79.38, true);
+    geoBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></svg> Near me';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      showPersonal(pos.coords.latitude, pos.coords.longitude);
+      geoBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></svg> Near me';
+    },
+    err => {
+      // Fallback to Toronto centre on permission denial
+      showPersonal(43.65, -79.38, true);
+      geoBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5 8 12 8 12s8-7 8-12a8 8 0 0 0-8-8z"/></svg> Near me';
+    },
+    { timeout: 8000, maximumAge: 60000 }
+  );
+});
+
+/* =========================================================
+   7-DAY FORECAST
+   ========================================================= */
+const forecastChart = document.getElementById('forecastChart');
+const forecastRegions = {
+  south: [7.4, 7.8, 8.2, 6.5, 5.8, 7.1, 7.6],
+  east:  [8.1, 8.4, 8.7, 7.2, 6.8, 7.9, 8.3],
+  north: [3.2, 3.8, 4.1, 3.5, 2.9, 3.6, 4.2]
+};
+
+const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+function colorForScore(s) {
+  if (s >= 9) return '#e85a4f';
+  if (s >= 7) return '#ff8c5a';
+  if (s >= 4) return '#f5d76e';
+  return '#5fbf7f';
+}
+
+function renderForecast(region) {
+  const values = forecastRegions[region];
+  const today = new Date();
+  forecastChart.innerHTML = '';
+  values.forEach((v, i) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    const dayLabel = i === 0 ? 'Today' : dayNames[date.getDay()];
+    const heightPct = (v / 10) * 100;
+    const color = colorForScore(v);
+    const day = document.createElement('div');
+    day.className = 'forecast-day';
+    day.innerHTML = `
+      <div class="forecast-day-value" style="color:${color}">${v.toFixed(1)}</div>
+      <div class="forecast-bar" style="height:${heightPct}%; color:${color}"></div>
+      <div class="forecast-day-label">${dayLabel}</div>
+      <div class="forecast-day-date">${date.getMonth()+1}/${date.getDate()}</div>
+    `;
+    forecastChart.appendChild(day);
+  });
+}
+
+renderForecast('south');
+
+document.querySelectorAll('.forecast-toggle button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.forecast-toggle button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderForecast(btn.dataset.region);
+    document.querySelector('.forecast-sub').textContent =
+      'Based on temperature, humidity, and questing models · ' +
+      ({south: 'Southern', east: 'Eastern', north: 'Northern'})[btn.dataset.region] + ' Ontario';
+  });
+});
+
+/* =========================================================
+   SIZE COMPARISON SLIDER
+   ========================================================= */
+const sizeData = [
+  { stage: 'Larva',    sizeMm: 0.5,  pxSize: 6,   compare: 'Grain of sand',  risk: 'Low',     riskColor: '#2d6a4f',  blurb: '<strong style="color:var(--ink-dark)">Larvae rarely carry Lyme.</strong> They hatch uninfected and pick up bacteria only when they feed on infected mice. Six legs, not eight.' },
+  { stage: 'Nymph',    sizeMm: 1.5,  pxSize: 14,  compare: 'Poppy seed',     risk: 'Highest', riskColor: '#c75a3a',  blurb: '<strong style="color:var(--ink-dark)">Nymphs are why ticks are dangerous.</strong> Active May-July, infected with Lyme from mouse hosts, and so small most bites are never noticed.' },
+  { stage: 'Adult',    sizeMm: 3.5,  pxSize: 32,  compare: 'Sesame seed',    risk: 'High',    riskColor: '#b8821e', blurb: '<strong style="color:var(--ink-dark)">Adults are easier to spot</strong> but have the highest infection rate (20-30%+ in endemic Ontario areas). Active spring and fall.' },
+  { stage: 'Engorged', sizeMm: 10,   pxSize: 90,  compare: 'Small grape',    risk: 'Already attached', riskColor: '#5a5a5a', blurb: '<strong style="color:var(--ink-dark)">An engorged tick has been attached for days.</strong> The longer it feeds, the higher the chance of disease transmission. Remove immediately with fine-tipped tweezers.' }
+];
+
+const sizeSlider = document.getElementById('sizeSlider');
+const tickFigure = document.getElementById('tickFigure');
+const sizeLabels = document.querySelectorAll('.size-stage-label');
+
+function updateSize(idx) {
+  const d = sizeData[idx];
+  tickFigure.style.width = d.pxSize + 'px';
+  tickFigure.style.height = d.pxSize + 'px';
+  document.getElementById('sizeReadoutSize').textContent = d.sizeMm + ' mm';
+  document.getElementById('sizeReadoutCompare').textContent = d.compare;
+  const r = document.getElementById('sizeReadoutRisk');
+  r.textContent = d.risk;
+  r.style.color = d.riskColor;
+  document.getElementById('sizeBlurb').innerHTML = d.blurb;
+  sizeLabels.forEach((l, i) => l.classList.toggle('active', i === idx));
+}
+
+sizeSlider.addEventListener('input', e => updateSize(parseInt(e.target.value)));
+sizeLabels.forEach(l => l.addEventListener('click', () => {
+  const idx = parseInt(l.dataset.stage);
+  sizeSlider.value = idx;
+  updateSize(idx);
+}));
+
+/* =========================================================
+   SYMPTOM TRACKER (30-day, localStorage)
+   ========================================================= */
+const symptoms = [
+  { id: 's1', text: 'Expanding red rash at or near the bite (with or without bullseye)', severity: 'red' },
+  { id: 's2', text: 'Fever, chills, or unusual fatigue', severity: 'red' },
+  { id: 's3', text: 'Severe headache or stiff neck', severity: 'red' },
+  { id: 's4', text: 'Facial drooping (Bell\'s palsy)', severity: 'red' },
+  { id: 's5', text: 'Heart palpitations, chest pain, or fainting', severity: 'red' },
+  { id: 's6', text: 'Joint swelling, especially the knee', severity: 'red' },
+  { id: 's7', text: 'Muscle aches or general flu-like feeling', severity: 'orange' },
+  { id: 's8', text: 'Swollen lymph nodes near the bite', severity: 'orange' },
+  { id: 's9', text: 'Tingling, numbness, or shooting nerve pain', severity: 'orange' }
+];
+
+const trackerEmpty = document.getElementById('trackerEmpty');
+const trackerActive = document.getElementById('trackerActive');
+const STORAGE_KEY = 'tickwatch_tracker_v1';
+
+// Set max date on bite date input to today
+const biteDateInput = document.getElementById('biteDate');
+const todayStr = new Date().toISOString().split('T')[0];
+biteDateInput.max = todayStr;
+biteDateInput.value = todayStr;
+
+function loadTracker() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); }
+  catch (e) { return null; }
+}
+function saveTracker(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function clearTracker() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+function renderSymptoms(checked = []) {
+  const list = document.getElementById('symptomList');
+  list.innerHTML = symptoms.map(s => `
+    <li class="symptom-item ${checked.includes(s.id) ? 'checked' : ''}" data-id="${s.id}">
+      <div class="symptom-checkbox">${checked.includes(s.id) ? '✓' : ''}</div>
+      <div class="symptom-text">${s.text}</div>
+      <span class="symptom-severity ${s.severity}">${s.severity === 'red' ? 'Red flag' : 'Monitor'}</span>
+    </li>
+  `).join('');
+  list.querySelectorAll('.symptom-item').forEach(item => {
+    item.addEventListener('click', () => toggleSymptom(item.dataset.id));
+  });
+}
+
+function toggleSymptom(id) {
+  const data = loadTracker();
+  if (!data) return;
+  data.checked = data.checked || [];
+  if (data.checked.includes(id)) {
+    data.checked = data.checked.filter(x => x !== id);
+  } else {
+    data.checked.push(id);
+  }
+  saveTracker(data);
+  renderSymptoms(data.checked);
+  updateAlert(data.checked);
+}
+
+function updateAlert(checked) {
+  const hasRed = checked.some(id => symptoms.find(s => s.id === id)?.severity === 'red');
+  document.getElementById('trackerAlert').classList.toggle('visible', hasRed);
+}
+
+function renderTracker() {
+  const data = loadTracker();
+  if (!data) {
+    trackerEmpty.style.display = '';
+    trackerActive.classList.remove('visible');
+    return;
+  }
+  trackerEmpty.style.display = 'none';
+  trackerActive.classList.add('visible');
+
+  const bite = new Date(data.biteDate);
+  const now = new Date();
+  bite.setHours(0,0,0,0); now.setHours(0,0,0,0);
+  const days = Math.max(0, Math.round((now - bite) / 86400000));
+
+  document.getElementById('daysSince').textContent = days;
+  document.getElementById('biteDateDisplay').textContent =
+    'Bitten on ' + bite.toLocaleDateString('en-CA', { weekday: 'long', month: 'long', day: 'numeric' });
+
+  const pct = Math.min(100, (days / 30) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  document.querySelectorAll('.milestone').forEach(m => {
+    const d = parseInt(m.dataset.day);
+    m.classList.remove('reached', 'current');
+    if (days >= d) m.classList.add('reached');
+    // Mark current = the next upcoming or just-passed milestone
+    if (days < d && (days >= d - 3 || (d === 3 && days < 3))) m.classList.add('current');
+  });
+  // If past 30, mark final as reached
+  renderSymptoms(data.checked || []);
+  updateAlert(data.checked || []);
+}
+
+/* =========================================================
+   STICKY FAB
+   ========================================================= */
+const fabBtn = document.getElementById('fabBtn');
+const fabMenu = document.getElementById('fabMenu');
+fabBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  fabMenu.classList.toggle('open');
+});
+document.addEventListener('click', (e) => {
+  if (!fabMenu.contains(e.target) && e.target !== fabBtn) {
+    fabMenu.classList.remove('open');
+  }
+});
+fabMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => fabMenu.classList.remove('open'));
+});
+
+document.getElementById('startTracker').addEventListener('click', () => {
+  const dateVal = biteDateInput.value;
+  if (!dateVal) return;
+  saveTracker({ biteDate: dateVal, checked: [] });
+  renderTracker();
+});
+
+document.getElementById('resetTracker').addEventListener('click', () => {
+  if (confirm('Clear your symptom tracker? This cannot be undone.')) {
+    clearTracker();
+    renderTracker();
+  }
+});
+
+renderTracker();
+</script>
+
 </body>
 </html>

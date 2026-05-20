@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Found a Tick — What Do I Do? | TickWatch Ontario</title>
+<meta name="description" content="Step-by-step Ontario-specific guide for what to do after a tick bite. Removal, identification, when to see a pharmacist or doctor, and 30-day symptom monitoring.">
+<style>
+  :root {
+    --bg: #fbf9f4;
+    --ink: #1a1a1a;
+    --muted: #5c5c5c;
+    --accent: #2d6a4f;
+    --accent-light: #d8f3dc;
+    --warning: #c1440e;
+    --warning-light: #fde4d4;
+    --card: #ffffff;
+    --border: #e5e1d8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 20px 80px;
+  }
+  header {
+    padding: 16px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  .brand {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 36px;
+    line-height: 1.2;
+    margin: 8px 0 12px;
+    font-weight: 700;
+  }
+  .lede {
+    font-size: 18px;
+    color: var(--muted);
+    margin: 0;
+  }
+  h2 {
+    font-size: 26px;
+    margin: 48px 0 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    line-height: 1.3;
+  }
+  h2 .step {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 32px;
+    font-size: 16px;
+    margin-right: 10px;
+    vertical-align: 2px;
+  }
+  h3 {
+    font-size: 18px;
+    margin: 24px 0 8px;
+  }
+  p { margin: 0 0 16px; }
+  ul, ol { padding-left: 22px; margin: 0 0 16px; }
+  li { margin-bottom: 8px; }
+  a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { text-decoration: none; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin: 20px 0;
+  }
+  .callout {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 16px 18px;
+    border-radius: 4px;
+    margin: 20px 0;
+  }
+  .callout strong { color: var(--accent); }
+  .tick-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 0 0 24px;
+  }
+  .tick-gallery figure {
+    margin: 0;
+    text-align: center;
+  }
+  .tick-gallery img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .tick-gallery img:hover {
+    transform: scale(1.04);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  }
+  .tick-gallery figcaption {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  .tick-gallery figcaption strong {
+    display: block;
+    font-size: 13px;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .tick-gallery .tick-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 6px;
+  }
+  .tick-tag.danger {
+    background: var(--warning-light);
+    color: var(--warning);
+  }
+  .tick-tag.caution {
+    background: #fff3cd;
+    color: #856404;
+  }
+  .tick-tag.low {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+  .warning {
+    background: var(--warning-light);
+    border-left: 4px solid var(--warning);
+    padding: 16px 18px;
+    border-radius: 4px;
+    margin: 20px 0;
+  }
+  .warning strong { color: var(--warning); }
+  .do-dont {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .do, .dont {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .do h4, .dont h4 {
+    margin: 0 0 12px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .do h4 { color: var(--accent); }
+  .dont h4 { color: var(--warning); }
+  .do ul, .dont ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .do li, .dont li {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .timeline {
+    border-left: 2px solid var(--border);
+    padding-left: 20px;
+    margin: 20px 0;
+  }
+  .timeline-item {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .timeline-item::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: absolute;
+    left: -27px;
+    top: 6px;
+  }
+  .timeline-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--accent);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 8px 0;
+  }
+  .cta:hover { background: #1f4e3a; text-decoration: none; }
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin: 24px 0;
+  }
+  .toc h4 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 20px;
+  }
+  .toc li { margin-bottom: 4px; }
+  footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  footer p { margin-bottom: 10px; }
+  .disclaimer {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+  @media (max-width: 600px) {
+    h1 { font-size: 28px; }
+    h2 { font-size: 22px; }
+    .do-dont { grid-template-columns: 1fr; }
+    .tick-gallery { grid-template-columns: repeat(2, 1fr); }
+    .wrap { padding: 20px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand">TickWatch Ontario</div>
+  <h1>I found a tick. What do I do?</h1>
+  <p class="lede">A calm, step-by-step guide for Ontario. Most tick bites do not cause illness — but acting quickly and correctly matters.</p>
+</header>
+
+<div class="callout">
+  <strong>If you have any of these right now, go to the ER:</strong> chest pain, fainting, severe headache with stiff neck, sudden facial drooping, or trouble breathing. These can be signs of Lyme carditis or neurological Lyme disease.
+</div>
+
+<div class="toc">
+  <h4>What this page covers</h4>
+  <ol>
+    <li><a href="#remove">Remove the tick safely</a></li>
+    <li><a href="#save">Save the tick and identify it</a></li>
+    <li><a href="#pep">Should you get preventive antibiotics?</a></li>
+    <li><a href="#monitor">Watch for symptoms (30 days)</a></li>
+    <li><a href="#doctor">When to see a doctor</a></li>
+    <li><a href="#pets">If the tick was on a pet</a></li>
+  </ol>
+</div>
+
+<h2 id="remove"><span class="step">1</span>Remove the tick</h2>
+
+<p>Use <strong>fine-tipped tweezers</strong> (pointed, not the blunt eyebrow kind) or a tick-removal card. Speed matters — the longer a tick is attached, the higher the chance of disease transmission.</p>
+
+<div class="card">
+  <h3>How to remove it</h3>
+  <ol>
+    <li>Grasp the tick <strong>as close to your skin as possible</strong>, right at the mouthparts.</li>
+    <li>Pull <strong>straight up</strong> with steady, even pressure. Don't twist, jerk, or yank.</li>
+    <li>If the mouthparts break off and don't come out easily, leave them — your skin will expel them like a splinter. Retained mouthparts do not transmit Lyme.</li>
+    <li>Wash the bite with soap and water, then disinfect with rubbing alcohol.</li>
+    <li>Wash your hands.</li>
+  </ol>
+</div>
+
+<div class="do-dont">
+  <div class="do">
+    <h4>✓ Do</h4>
+    <ul>
+      <li>Use fine-tipped tweezers</li>
+      <li>Pull straight up, steadily</li>
+      <li>Save the tick (see step 2)</li>
+      <li>Note the date and bite location</li>
+    </ul>
+  </div>
+  <div class="dont">
+    <h4>✗ Don't</h4>
+    <ul>
+      <li>Burn it with a match</li>
+      <li>Smother it with Vaseline or nail polish</li>
+      <li>Twist or yank</li>
+      <li>Crush it with your fingers</li>
+    </ul>
+  </div>
+</div>
+
+<div class="warning">
+  <strong>Why no Vaseline, matches, or nail polish?</strong> These methods stress the tick and make it regurgitate its stomach contents — including Lyme bacteria — into the bite. Health Canada, Public Health Ontario, and the CDC all warn against them.
+</div>
+
+<h2 id="save"><span class="step">2</span>Save the tick and identify it</h2>
+
+<p>Knowing the <em>species</em> of tick is the single most useful piece of information for deciding what to do next. In Ontario, only the <strong>blacklegged tick (deer tick)</strong> transmits Lyme disease.</p>
+
+<div class="card">
+  <h3>Common ticks in Ontario — know what bit you</h3>
+  <div class="tick-gallery">
+    <figure>
+      <img src="Tick images/tick1.png" alt="Blacklegged tick (deer tick) — orange-red scutum and dark brown body" />
+      <figcaption>
+        <strong>Blacklegged Tick</strong>
+        <em>Ixodes scapularis</em>
+        <span class="tick-tag danger">⚠ Transmits Lyme</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="Tick images/tick2.png" alt="American Dog Tick — brown body with ornate white markings on scutum" />
+      <figcaption>
+        <strong>American Dog Tick</strong>
+        <em>Dermacentor variabilis</em>
+        <span class="tick-tag caution">Rocky Mtn Spotted Fever</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="Tick images/tick3.png" alt="Lone Star Tick — brown body with single white spot on back" />
+      <figcaption>
+        <strong>Lone Star Tick</strong>
+        <em>Amblyomma americanum</em>
+        <span class="tick-tag caution">Alpha-gal / Ehrlichiosis</span>
+      </figcaption>
+    </figure>
+    <figure>
+      <img src="Tick images/tick4.png" alt="Asian Longhorned Tick — golden-tan body, no markings" />
+      <figcaption>
+        <strong>Asian Longhorned Tick</strong>
+        <em>Haemaphysalis longicornis</em>
+        <span class="tick-tag low">Low risk to humans</span>
+      </figcaption>
+    </figure>
+  </div>
+  <h3>How to save it</h3>
+  <ul>
+    <li>Drop the tick into a small Ziploc bag or screw-top container.</li>
+    <li>Take a clear, in-focus photo of its <strong>back</strong> on a light surface, with a coin for scale.</li>
+    <li>Label it: date found, location on your body, and geographic location of likely exposure (park, trail, backyard).</li>
+  </ul>
+</div>
+
+<a class="cta" href="https://www.etick.ca" target="_blank" rel="noopener">Submit your tick to eTick.ca →</a>
+
+<p style="margin-top: 12px;"><a href="https://www.etick.ca" target="_blank" rel="noopener">eTick.ca</a> is a free service run by Bishop's University. Trained acarologists will identify your tick from a photo, usually within 24–48 hours. They do not test for diseases — but species ID is what your doctor or pharmacist actually needs.</p>
+
+<div class="callout">
+  <strong>Why not test the tick for Lyme?</strong> Ontario's public health labs no longer routinely test removed ticks. A positive tick doesn't mean you were infected, and the result comes back too slowly to guide treatment. Decisions are made on species + attachment time + your symptoms, not on tick PCR.
+</div>
+
+<h2 id="pep"><span class="step">3</span>Should you get preventive antibiotics?</h2>
+
+<p>For high-risk bites, a <strong>single 200 mg dose of doxycycline</strong> taken within 72 hours can significantly reduce the risk of developing Lyme disease. This is called post-exposure prophylaxis (PEP).</p>
+
+<div class="card">
+  <h3>You may be a candidate if <em>all</em> of these are true:</h3>
+  <ol>
+    <li>The tick is identified as a <strong>blacklegged tick (Ixodes scapularis)</strong>, adult or nymph.</li>
+    <li>It was attached for <strong>36 hours or more</strong> (look for engorgement — a tick that hasn't fed looks flat).</li>
+    <li>You can start treatment <strong>within 72 hours</strong> of removing it.</li>
+    <li>The bite happened in a <strong>Lyme-endemic area of Ontario</strong> (most of southern and eastern Ontario — see <a href="https://www.publichealthontario.ca/en/Data-and-Analysis/Infectious-Disease/Lyme-Disease" target="_blank" rel="noopener">PHO's risk area map</a>).</li>
+    <li>You have no medical reason you can't take doxycycline.</li>
+  </ol>
+</div>
+
+<div class="callout">
+  <strong>In Ontario, pharmacists can prescribe this.</strong> Since January 2023, Ontario pharmacists can assess and prescribe single-dose doxycycline for Lyme PEP under the Minor Ailments Program — no doctor visit needed. This is often the fastest route. Walk into any pharmacy with your tick and ID.
+</div>
+
+<p>Other prescribers: family doctor, nurse practitioner, walk-in clinic, or Telehealth Ontario (call 811).</p>
+
+<h2 id="monitor"><span class="step">4</span>Watch for symptoms for 30 days</h2>
+
+<p>Mark today's date on a calendar. Symptoms of Lyme and other tick-borne illnesses can appear anywhere from 3 days to several weeks after a bite.</p>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-label">Day 3–30 — Most common</div>
+    <p><strong>Expanding red rash</strong> at the bite site (erythema migrans). The classic "bullseye" pattern only appears in about 70–80% of cases — many rashes are solid red, oval, or in hidden places (scalp, groin, behind a knee). Any expanding rash at or near the bite is a red flag.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-label">Day 3–30 — Flu-like</div>
+    <p>Fever, chills, fatigue, headache, muscle and joint aches, swollen lymph nodes — especially if it's the wrong season for flu.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-label">Weeks later</div>
+    <p>Facial drooping (Bell's palsy), severe headache with stiff neck, shooting nerve pains, heart palpitations, lightheadedness.</p>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-label">Months later</div>
+    <p>Joint swelling and pain — most often in the knee.</p>
+  </div>
+</div>
+
+<div class="warning">
+  <strong>The bullseye is a myth — sort of.</strong> About 20–30% of people with Lyme never get a bullseye rash. No rash does <em>not</em> mean no Lyme. If you have flu-like symptoms in the weeks after a tick bite, see a doctor.
+</div>
+
+<h2 id="doctor"><span class="step">5</span>When to see a doctor</h2>
+
+<div class="warning">
+  <strong>Go to the emergency room immediately</strong> if you have: chest pain or palpitations, fainting, severe headache with stiff neck, sudden facial drooping, or trouble breathing.
+</div>
+
+<h3>See a doctor within a day or two if:</h3>
+<ul>
+  <li>An expanding red rash at or near the bite (with or without bullseye pattern)</li>
+  <li>Fever, chills, severe headache, or unusual fatigue in the 3–30 days after a bite</li>
+  <li>Joint swelling, especially the knee</li>
+  <li>You're pregnant and had a tick bite</li>
+  <li>The tick was a <strong>Lone Star tick</strong> (rare in Ontario, but rising — they can trigger a serious meat allergy called alpha-gal syndrome)</li>
+</ul>
+
+<h3>Diagnostic testing</h3>
+<p>Ontario uses a two-tier blood test (ELISA followed by Western Blot). Important caveats:</p>
+<ul>
+  <li>Antibodies take <strong>2–6 weeks</strong> to develop. Testing in the first 2–4 weeks of illness often comes back falsely negative.</li>
+  <li>If you have a clear bullseye rash and known tick exposure, your doctor should treat you without waiting for blood test results.</li>
+  <li>Other tick-borne infections (anaplasmosis, babesiosis) need separate tests.</li>
+</ul>
+
+<h2 id="pets"><span class="step">6</span>If the tick was on a pet</h2>
+
+<p>Remove it the same way — fine-tipped tweezers, close to the skin, steady upward pull. Dogs can get Lyme disease, anaplasmosis, ehrlichiosis, and babesiosis.</p>
+
+<p><strong>Call your vet if your dog develops:</strong> lethargy, lameness (especially shifting from leg to leg), fever, loss of appetite, swollen joints, or reluctance to move in the weeks after a bite.</p>
+
+<p>Ask your vet about year-round tick prevention — Ontario's tick season is now 9–10 months long, and most vets now recommend year-round coverage in the south.</p>
+
+<footer>
+  <p><strong>Sources:</strong> <a href="https://www.publichealthontario.ca/en/Diseases-and-Conditions/Infectious-Diseases/Vector-Borne-Zoonotic-Diseases/Lyme-Disease" target="_blank" rel="noopener">Public Health Ontario</a> · <a href="https://www.canada.ca/en/public-health/services/diseases/lyme-disease.html" target="_blank" rel="noopener">Government of Canada</a> · <a href="https://www.cdc.gov/ticks/" target="_blank" rel="noopener">CDC</a> · <a href="https://www.etick.ca" target="_blank" rel="noopener">eTick.ca</a> · <a href="https://www.idsociety.org/practice-guideline/lyme-disease/" target="_blank" rel="noopener">IDSA 2020 Lyme Guidelines</a></p>
+  <p class="disclaimer">This page is general health information for Ontario residents, not medical advice. For a specific tick bite or symptoms, contact a pharmacist, doctor, or call Health811 (811). In an emergency, call 911 or go to the nearest emergency department.</p>
+  <p class="disclaimer">© TickWatch Ontario · Last reviewed May 2026</p>
+</footer>
+
+</div>
+</body>
+</html>
