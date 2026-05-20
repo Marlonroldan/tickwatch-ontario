@@ -2481,10 +2481,13 @@ document.addEventListener('keydown', (e) => {
 const map = L.map('map', {
   center: [46.5, -82.0],
   zoom: 5,
-  zoomControl: true,
-  scrollWheelZoom: false,
+  zoomControl: false,
+  scrollWheelZoom: true,
   attributionControl: true
 });
+
+// Place zoom control in bottom-left so it doesn't overlap legend (top-left) or activity index (bottom-right)
+L.control.zoom({ position: 'bottomleft' }).addTo(map);
 
 // Dark tile layer (CartoDB dark matter)
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
